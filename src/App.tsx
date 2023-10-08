@@ -12,6 +12,7 @@ import { whoIsLoggedIn } from './authentication/auth.effect';
 import PublicRoutes from './publicRoutes';
 import { getProjectsEffect } from './projects/projects.effect';
 import { RouteKeys } from './navigation/routekeys';
+import { getTaskStaticPropertiesEffect } from './task/task.effect';
 
 const App = () => {
 
@@ -40,6 +41,7 @@ const App = () => {
       localStorage.setItem('st', JSON.stringify(userToken));
       setAuthHeader(userToken ? userToken?.access.token : '');
       dispatch(getProjectsEffect());
+      dispatch(getTaskStaticPropertiesEffect());
     }
     if (!isRefreshingAuth && !userInfo?.id) {
       navigate(RouteKeys.login);
@@ -56,6 +58,10 @@ const App = () => {
           {userInfo?.id && <PersistentDrawerLeft />}
         </Grid>
         <Grid item={true} xs={userInfo?.id ? 9 : 12}>
+          <div>ToDo</div>
+          <div>Replace select with Menu in TaskStatus</div>
+          <div>Use status menu options from TaskStaticProps reducer state</div>
+          <div>Avoid keeping status menu options in a state at TaskStatus component</div>
           <PublicRoutes />
         </Grid>
       </Grid>

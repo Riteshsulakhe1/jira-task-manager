@@ -42,11 +42,17 @@ export type TaskStatusItem = {
     value: TaskStatus;
 }
 
-interface YourObject {
+export interface TaskStaticProperties {
     taskType: typeof TaskType;
-    taskStatus: typeof TaskStatus;
+    taskStatus: Array<TaskStatusItem>;
     taskPriority: typeof TaskPriority;
     epicInitials: EpicInitials;
     labelInitials: LabelInitials;
     linkedIssueType: typeof LinkedIssueType;
+}
+
+export interface InitialStates {
+    isLoading: boolean;
+    error: any;
+    data?: TaskStaticProperties;
 }

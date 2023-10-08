@@ -1,24 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { TaskStatus, TaskStatusItem } from '../Types/taskStaticProperties';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Grid } from '@mui/material';
+import { useAppSelector } from '../hooks';
 
 interface StatusDropdownProps {
     status: TaskStatus
 }
 
 const StatusDropdown = (props: StatusDropdownProps) => {
-    const [statusList, setStatusList] = useState<Array<TaskStatusItem>>([]);
+    console.log('props', props);
     const [selectedStatus, setSelectedStaus] = useState<TaskStatus>(props.status || TaskStatus.TO_DO);
-
-    useEffect(() => {
-        const entries = Object.values(TaskStatus);
-        const list: TaskStatusItem[] = entries.map((item: TaskStatus) => ({ label: item, value: item }));
-        console.log('list', list);
-        setStatusList(list);
-    }, []);
+    const statusList = useAppSelector(state => state.taskStaticProperties.data?.taskStatus);
 
 
     const handleChange = (event: SelectChangeEvent) => {
@@ -26,15 +21,13 @@ const StatusDropdown = (props: StatusDropdownProps) => {
     };
 
     const renderStatus = useCallback(() => {
-        if (statusList.length) {
+        if (statusList?.length) {
             return (
-                <>
-                    {statusList.map((status) => (
-                        <MenuItem dense={true} val>
-                            {status.label}
-                        </MenuItem>
-                    ))}
-                </>
+                statusList.map((status) => (
+                    <MenuItem key={status.value} dense={true} value={status.value}>
+                        {status.label}
+                    </MenuItem>
+                ))
             );
         } else {
             return null;
@@ -44,19 +37,17 @@ const StatusDropdown = (props: StatusDropdownProps) => {
     return (
         <>
             {
-                statusList.length ? (
+                statusList?.length ? (
                     <Grid item={true} xs={12}>
-                        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 80 }}>
                             <Select
-                                labelId="demo-simple-select-standard-label"
-                                id="task-staus"
+                                labelId="task-status-label"
+                                id="task-status"
                                 value={selectedStatus}
                                 onChange={handleChange}
-                                label="Status"
+                                label={selectedStatus}
+                                variant="standard"
                             >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
                                 {renderStatus()}
                             </Select>
                         </FormControl>
