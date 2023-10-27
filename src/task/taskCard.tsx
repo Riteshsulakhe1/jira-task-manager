@@ -8,28 +8,29 @@ import Typography from '@mui/material/Typography';
 import { Task } from '../Types/common';
 import { Grid, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import StatusDropdown from './taskStatusDropdown';
+import StatusDropdown from './components/taskStatusDropdown';
 import { TaskStatus } from '../Types/taskStaticProperties';
-import Assignee from './assignee';
-import TaskActionMenu from './taskActionMenu';
+import Assignee from './components/assignee';
+import TaskActionMenu from './components/taskActionMenu';
 
 interface Props {
     task: Task,
+    sprintId: string;
 }
 const TaskCard = (props: Props) => {
-    const { task } = props;
+    const { task, sprintId } = props;
     const classes = styles();
 
     return (
-        <Card className={classes.card}>
+        <Card classes={{ root: classes.card }}>
             <CardContent classes={{ root: classes.content }}>
-                <Grid xs={7} item={true}>
+                <Grid xs={7} item={true} classes={{ root: classes.cardTitle }}>
                     <Typography component="span" align='center'>
                         {task.title}
                     </Typography>
                 </Grid>
                 <Grid item={true} xs={5} classes={{ root: classes.contentAction }}>
-                    <StatusDropdown status={task.status as TaskStatus} />
+                    <StatusDropdown status={task.status as TaskStatus} taskId={task.id} sprintId={sprintId} />
                     <Assignee assignee={task.assignedTo} />
                     <TaskActionMenu taskId={task.id} />
                 </Grid>
@@ -41,12 +42,19 @@ export default TaskCard;
 
 const styles = makeStyles((theme: Theme) => ({
     card: {
-        margin: '0.25rem',
+        margin: '0rem',
         width: '100%',
-        padding: '0.25rem 0.5rem'
+        padding: '0rem',
+        borderBottom: '0.5px solid grey',
+        borderRadius: '0rem'
+    },
+    cardTitle: {
+        display: 'flex',
+        alignItems: 'center'
     },
     content: {
-        display: 'flex'
+        display: 'flex',
+        padding: '0rem 0.55rem !important'
     },
     contentAction: {
         display: 'flex',

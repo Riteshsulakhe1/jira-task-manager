@@ -7,10 +7,6 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 interface TaskActionMenuProps {
     taskId: string;
 }
-const anchorOrigin = {
-    vertical: 'top',
-    horizontal: 'left',
-};
 const TaskActionMenu = ({ taskId }: TaskActionMenuProps) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);

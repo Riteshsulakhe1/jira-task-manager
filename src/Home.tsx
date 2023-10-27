@@ -29,12 +29,13 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        if (!isRefreshingAuth && !userInfo?.id) {
-            navigate('/login');
-        } else {
-            localStorage.setItem('st', JSON.stringify(userToken));
-            setAuthHeader(userToken ? userToken?.access.token : '');
-        }
+        console.log('Home comp userInfo effect==>');
+        // if (!isRefreshingAuth && !userInfo?.id) {
+        //     navigate('/login');
+        // } else {
+        //     localStorage.setItem('st', JSON.stringify(userToken));
+        //     setAuthHeader(userToken ? userToken?.access.token : '');
+        // }
     }, [userInfo, isRefreshingAuth]);
 
     return (

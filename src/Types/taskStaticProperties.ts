@@ -37,14 +37,14 @@ export enum LinkedIssueType {
     BLOCKED_BY = 'is blocked by',
 }
 
-export type TaskStatusItem = {
+export type TaskSelectItem = {
     label: TaskStatus;
     value: TaskStatus;
 }
 
 export interface TaskStaticProperties {
-    taskType: typeof TaskType;
-    taskStatus: Array<TaskStatusItem>;
+    taskType: Array<TaskSelectItem>;
+    taskStatus: Array<TaskSelectItem>;
     taskPriority: typeof TaskPriority;
     epicInitials: EpicInitials;
     labelInitials: LabelInitials;

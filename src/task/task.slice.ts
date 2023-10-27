@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 import { InitialStates } from "../Types/taskStaticProperties";
 import { getTaskStaticPropertiesEffect } from "./task.effect";
 

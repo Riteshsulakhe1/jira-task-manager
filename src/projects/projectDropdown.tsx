@@ -11,7 +11,7 @@ import { getBacklogRoute } from '../navigation/routekeys';
 import { makeStyles } from '@mui/styles';
 
 export default function ProjectDropdown() {
-    const [selectedProject, setSelectedProject] = React.useState('');
+    const [selectedProjectId, setSelectedProjectId] = React.useState('');
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -19,15 +19,20 @@ export default function ProjectDropdown() {
 
     // Redux states
     const {
-        isLoading, data
+        isLoading, data, selectedProject
     } = useAppSelector(state => state.project);
 
+    React.useEffect(() => {
+        if (selectedProject?.id && !selectedProjectId) {
+            setSelectedProjectId(selectedProject.id);
+        }
+    }, [selectedProject]);
 
     const handleChange = (event: SelectChangeEvent) => {
-        setSelectedProject(event.target.value);
+        setSelectedProjectId(event.target.value);
         const project = data.filter((item: Project) => item.id === event.target.value)[0] || null;
         dispatch(selectProject(project));
-        navigate(getBacklogRoute(project.id));
+        navigate(getBacklogRoute(project.id), { state: { projectId: project.id } });
     };
 
     const renderMenuItem = React.useCallback(() => {
@@ -38,14 +43,9 @@ export default function ProjectDropdown() {
 
     return (
         <FormControl sx={{ m: 1, minWidth: 120 }} size="small" classes={{ root: classes.form }}>
-            <InputLabel id="project" classes={{ root: classes.label }}>
-                Project
-            </InputLabel>
             <Select
-                labelId="project"
                 id="project-dropdown"
-                value={selectedProject}
-                label="Project"
+                value={selectedProjectId}
                 onChange={handleChange}
             >
                 <MenuItem value="">

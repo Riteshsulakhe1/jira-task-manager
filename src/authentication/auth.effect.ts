@@ -4,10 +4,13 @@ import { GetLoggedInUserBody, LoginReqBody } from '../Types/auth';
 
 export const signin = createAsyncThunk(
     'user login',
-    async (data: LoginReqBody) => await login(data)
+    async (data: LoginReqBody) => await login(data),
+
 );
 
 export const whoIsLoggedIn = createAsyncThunk(
     'get logged in user by refresh token',
     async (data: GetLoggedInUserBody) => await getLoggedInUserByRefreshToken(data)
 );
+
+// export const register = 

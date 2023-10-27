@@ -7,7 +7,7 @@ const theme = createTheme({
             main: '#ffff',
         },
         secondary: {
-            main: green[500],
+            main: '#0052CC',
         },
     },
     components: {
@@ -17,7 +17,23 @@ const theme = createTheme({
                     backgroundColor: '#F4F5F7'
                 }
             }
+        },
+        MuiButton: {
+            defaultProps: {
+
+                style: {
+                    // color: 'white'
+                }
+            }
+        },
+        MuiInputBase: {
+            defaultProps: {
+                style: {
+                    border: '1 px solid #2684FF'
+                }
+            }
         }
+
     }
 });
 export default theme;

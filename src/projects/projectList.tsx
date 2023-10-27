@@ -14,10 +14,15 @@ import { useAppSelector, useAppDispatch } from '../hooks';
 import { getProjectsEffect } from './projects.effect';
 import Loading from '../common/loading';
 import { Project } from '../Types/projects';
+import { selectProject } from './projects.slice';
+import { useNavigate } from 'react-router-dom';
+import { RouteKeys, getBacklogRoute } from '../navigation/routekeys';
+import Button from '@mui/material/Button';
 
 const Projects = (props: any) => {
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     // Redux states
     const {
@@ -25,13 +30,14 @@ const Projects = (props: any) => {
         totalPages, totalResults
     } = useAppSelector(state => state.project);
 
-    // useEffect(() => {
-    //     dispatch(getProjectsEffect());
-    // }, []);
-
     const Demo = styled('div')(({ theme }) => ({
         backgroundColor: theme.palette.background.paper,
     }));
+
+    const gotoProject = (project: Project) => {
+        dispatch(selectProject(project));
+        navigate(getBacklogRoute(project.id), { state: { projectId: project.id } });
+    }
 
     const renderList = useCallback(() => {
         return (data || []).map((item: Project) => (
@@ -42,6 +48,7 @@ const Projects = (props: any) => {
                         <DeleteIcon />
                     </IconButton>
                 }
+                onClick={() => gotoProject(item)}
             >
                 <ListItemAvatar>
                     <Avatar>
@@ -60,7 +67,12 @@ const Projects = (props: any) => {
         <Grid item={true} xs={12}>
             {isLoading && <Loading />}
             <Demo>
-                <List dense={true}>
+                <Grid item={true} xs={12} justifyContent={'flex-end'}>
+                    <Button variant="contained" color={'secondary'}>
+                        Create Project
+                    </Button>
+                </Grid>
+                <List sx={{ 'cursor': 'pointer' }}>
                     {renderList()}
                 </List>
             </Demo>

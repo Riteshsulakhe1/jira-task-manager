@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getBacklog } from "./backlog.effect";
 import { InitialStates } from '../Types/backlog';
+import { Task } from "../Types/common";
 
 const initialState: InitialStates = {
     isLoading: false,
@@ -11,7 +12,21 @@ const initialState: InitialStates = {
 const backlogSlice = createSlice({
     name: 'backlog',
     initialState,
-    reducers: {},
+    reducers: {
+        addTaskInSprint: (state, action) => {
+            // task: Task, sprintId: string
+            const sprintIndex = state.data.findIndex(sprint => sprint._id === action.payload.sprintId);
+            state.data[sprintIndex].tasks.push(action.payload.task);
+        },
+        updateTaskInSprint: (state, action) => {
+            const sprintIndex = state.data.findIndex(sprint => sprint._id === action.payload.sprintId);
+            const taskIndex = state.data[sprintIndex].tasks.findIndex(task => task.id === action.payload.taskId);
+            state.data[sprintIndex].tasks[taskIndex] = {
+                ...state.data[sprintIndex].tasks[taskIndex],
+                ...action.payload.task
+            };
+        }
+    },
     extraReducers(builder) {
 
         builder.addCase(getBacklog.pending, (state, action) => {
@@ -31,4 +46,5 @@ const backlogSlice = createSlice({
     },
 });
 
+export const { addTaskInSprint, updateTaskInSprint } = backlogSlice.actions;
 export default backlogSlice.reducer;

@@ -19,7 +19,6 @@ interface Props {
 
 const defaultDuration: number = 5000; // 5sec
 export default function SnackbarAlert(props: Props) {
-    console.log('props in snack', props);
     const {
         message,
         duration = defaultDuration,

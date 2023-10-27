@@ -31,9 +31,11 @@ const authSlice = createSlice({
             state.loading = true;
         })
         builder.addCase(signin.rejected, (state, action) => {
+            console.log('action =>', action);
             state.success = false;
             state.loading = false;
             state.userInfo = null;
+            state.error = action.error.message
         })
 
         // Who is logged in effect

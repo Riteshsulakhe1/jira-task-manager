@@ -7,6 +7,10 @@ export const RouteKeys = {
     forgotPassword: '/forgot-password',
     resetPassword: '/reset-password',
     project: projectKey,
+    board: '/board',
+    backlog: '/backlog',
+    createOrg: '/createOrganization',
+    createProject: `${projectKey}/create`
 }
 
 export const getProjectDetailsRoute = (projectId: string) => {
@@ -14,9 +18,11 @@ export const getProjectDetailsRoute = (projectId: string) => {
 };
 
 export const getBacklogRoute = (projectId: string) => {
-    return `${getProjectDetailsRoute(projectId)}/backlog`;
+    return `${getProjectDetailsRoute(projectId)}${RouteKeys.backlog}`;
 };
 
 export const getBoardRoute = (projectId: string) => {
-    return `${getProjectDetailsRoute(projectId)}/board`;
+    return `${getProjectDetailsRoute(projectId)}${RouteKeys.board}`;
 };
+
+export const getCreateProjectRoute = () => RouteKeys.createProject;

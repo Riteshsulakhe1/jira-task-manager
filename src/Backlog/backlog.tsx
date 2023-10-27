@@ -16,6 +16,7 @@ const Backlog = () => {
     const { data, error, isLoading } = useAppSelector(state => state.backlog);
 
     const [snackbar, setSnackbar] = useState<SnackbarInfo>({ message: '', severity: undefined });
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         if (selectedProject?.id) {
@@ -24,8 +25,9 @@ const Backlog = () => {
     }, [selectedProject]);
 
     useEffect(() => {
-        if (data.length) {
+        if (data.length && !isLoaded) {
             toggleSnackbar('Backlog sprints fetched successfully');
+            setIsLoaded(true);
         }
     }, [data]);
 
@@ -34,8 +36,9 @@ const Backlog = () => {
     }
 
     const renderSprints = useCallback(() => {
+        if (!data.length) return null;
         return (data || []).map((item: BacklogSprint) => (
-            <SprintCard key={item._id} sprint={item} />
+            <SprintCard key={item._id} sprint={item} toggleSnackbar={toggleSnackbar} />
         ))
     }, [data]);
 

@@ -1,10 +1,12 @@
-export const drawerLinks = [
+import { DrawerMenuKeys, DrawerMenuItem } from "../Types/common";
+
+export const drawerLinks: Array<DrawerMenuItem> = [
     {
-        name: 'Backlog',
-        link: ''
+        name: DrawerMenuKeys.BACKLOG,
+        link: '',
     },
     {
-        name: 'Board',
-        link: ''
+        name: DrawerMenuKeys.BOARD,
+        link: '',
     }
 ];

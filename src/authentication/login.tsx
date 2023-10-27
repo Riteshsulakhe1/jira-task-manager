@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { LoginReqBody } from '../Types/auth';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../common/loading';
+import { RouteKeys } from '../navigation/routekeys';
 
 function Copyright(props: any) {
     return (
@@ -43,15 +44,17 @@ export default function Login() {
     const loading = useAppSelector(state => state.auth.loading);
 
     useEffect(() => {
-        if (userInfo?.id) {
-            navigate('/');
+        console.log('userInfo in login==>', userInfo);
+        if (userInfo && !userInfo.orgId) {
+            navigate(RouteKeys.createOrg);
+        } else if (userInfo?.id) {
+            navigate(RouteKeys.project);
         }
     }, [userInfo]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log('data', data);
         console.log({
             email: data.get('email'),
             password: data.get('password'),
@@ -60,8 +63,7 @@ export default function Login() {
             email: data.get('email') as string,
             password: data.get('password') as string
         }
-        const response = await dispatch(signin(credentials));
-        console.log('response', response);
+        dispatch(signin(credentials));
     };
 
     return (
@@ -103,7 +105,7 @@ export default function Login() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                            value={'ritesh@1995'}
+                            value={'ritesh@19950'}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
@@ -125,7 +127,7 @@ export default function Login() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href={RouteKeys.register} variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

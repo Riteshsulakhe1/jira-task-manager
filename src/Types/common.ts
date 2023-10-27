@@ -27,3 +27,14 @@ export interface Task {
     updatedAt?: string;
     sprintId?: string;
 }
+
+export enum DrawerMenuKeys {
+    BACKLOG = 'Backlog',
+    BOARD = 'Board'
+}
+
+export interface DrawerMenuItem {
+    name: DrawerMenuKeys;
+    link: string;
+    icon?: React.ReactElement;
+}

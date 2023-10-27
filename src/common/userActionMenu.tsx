@@ -10,8 +10,13 @@ import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import { logout } from '../Apis/auth';
+import { useAppSelector } from '../hooks';
+import { LogoutRequest } from '../Types/auth';
 
 export default function UserActionMenu() {
+    const rToken = useAppSelector(state => state.auth.userToken?.refresh);
+
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -20,6 +25,14 @@ export default function UserActionMenu() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const onLogout = async () => {
+        const body: LogoutRequest = {
+            refreshToken: rToken?.token || ''
+        }
+        const data = await logout(body);
+    };
+
     return (
         <React.Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -90,7 +103,7 @@ export default function UserActionMenu() {
                     </ListItemIcon>
                     Settings
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={onLogout}>
                     <ListItemIcon>
                         <Logout fontSize="small" />
                     </ListItemIcon>

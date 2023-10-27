@@ -37,3 +37,24 @@ export interface InitialState {
     success: boolean;
     refreshingAuth: boolean;
 }
+
+export enum UserDetailsKey {
+    NAME = 'name',
+    EMAIL = 'email',
+    PASSWORD = 'password',
+    CONFIRM_PASSWORD = 'confirmPassword'
+}
+
+export interface UserDetailsBody {
+    name: string;
+    email: string;
+    password: string;
+}
+
+export interface UserDetails extends UserDetailsBody {
+    confirmPassword: string;
+}
+
+export interface LogoutRequest {
+    refreshToken: string;
+}
