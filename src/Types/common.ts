@@ -3,6 +3,7 @@ export type Severity = 'success' | 'error' | undefined;
 export interface SnackbarInfo {
     message: string;
     severity?: Severity;
+    duration?: number;
 }
 
 export interface Task {

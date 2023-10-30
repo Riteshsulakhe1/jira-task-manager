@@ -11,7 +11,9 @@ export const RouteKeys = {
     backlog: '/backlog',
     createOrg: '/createOrganization',
     createProject: `${projectKey}/create`
-}
+};
+
+export const publicRoutes = [RouteKeys.login, RouteKeys.register, RouteKeys.forgotPassword];
 
 export const getProjectDetailsRoute = (projectId: string) => {
     return `${projectKey}/${projectId}`;

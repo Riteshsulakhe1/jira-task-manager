@@ -13,6 +13,7 @@ import Backlog from './Backlog/backlog';
 import { RouteKeys } from "./navigation/routekeys";
 import Board from "./board/board";
 import CreateOrganization from "./authentication/createOrganization";
+import CreateProject from "./projects/createProject";
 
 const PublicRoutes = () => {
 
@@ -23,6 +24,7 @@ const PublicRoutes = () => {
             <Route path="/register" element={<Register />} />
             <Route path={RouteKeys.createOrg} element={<CreateOrganization />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path={RouteKeys.createProject} element={<CreateProject />} />
             <Route path="/projects/:projectId" element={<div>Edit Project</div>} />
             <Route path="/projects/:projectId/backlog" element={<Backlog />} />
             <Route path={"/projects/:projectId/" + RouteKeys.board} element={<Board />} />

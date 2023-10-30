@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { login, getLoggedInUserByRefreshToken } from '../Apis/auth';
-import { GetLoggedInUserBody, LoginReqBody } from '../Types/auth';
+import { login, getLoggedInUserByRefreshToken, register } from '../Apis/auth';
+import { GetLoggedInUserBody, LoginReqBody, UserDetailsBody } from '../Types/auth';
 
 export const signin = createAsyncThunk(
     'user login',
@@ -13,4 +13,7 @@ export const whoIsLoggedIn = createAsyncThunk(
     async (data: GetLoggedInUserBody) => await getLoggedInUserByRefreshToken(data)
 );
 
-// export const register = 
+export const registerEffect = createAsyncThunk(
+    'register user',
+    async (data: UserDetailsBody) => await register(data)
+);

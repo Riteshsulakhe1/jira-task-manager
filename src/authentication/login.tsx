@@ -18,6 +18,8 @@ import { LoginReqBody } from '../Types/auth';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../common/loading';
 import { RouteKeys } from '../navigation/routekeys';
+import SnackbarAlert from '../common/snackbar';
+import { SnackbarInfo } from '../Types/common';
 
 function Copyright(props: any) {
     return (
@@ -40,17 +42,22 @@ export default function Login() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const userInfo = useAppSelector(state => state.auth.userInfo);
-    const loading = useAppSelector(state => state.auth.loading);
+    const { userInfo, loading, error } = useAppSelector(state => state.auth);
+
+    const [snackbar, setSnackbar] = useState<SnackbarInfo>({ message: '', severity: 'success' });
+    const [details, setDetails] = useState({ email: '', password: '' });
 
     useEffect(() => {
-        console.log('userInfo in login==>', userInfo);
+        setSnackbar({ message: error?.message, severity: error ? 'error' : 'success' });
+    }, [error]);
+
+    useEffect(() => {
         if (userInfo && !userInfo.orgId) {
             navigate(RouteKeys.createOrg);
         } else if (userInfo?.id) {
             navigate(RouteKeys.project);
         }
-    }, [userInfo]);
+    }, [userInfo, navigate]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -66,10 +73,22 @@ export default function Login() {
         dispatch(signin(credentials));
     };
 
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setDetails(prev => ({
+            ...prev,
+            [event.target.id]: event.target.value
+        }));
+    };
+
+    const onCloseSnackbar = () => {
+        setSnackbar({ message: '' });
+    };
+
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
+                <SnackbarAlert {...snackbar} onClose={onCloseSnackbar} />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -94,7 +113,8 @@ export default function Login() {
                             name="email"
                             autoComplete="email"
                             autoFocus
-                            value={'riteshsulakhe123@gmail.com'}
+                            value={details.email}
+                            onChange={handleChange}
                         />
                         <TextField
                             margin="normal"
@@ -105,7 +125,8 @@ export default function Login() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                            value={'ritesh@19950'}
+                            value={details.password}
+                            onChange={handleChange}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}

@@ -10,7 +10,7 @@ import { setAuthHeader, resetAuthHeader } from './Apis/axios';
 import { whoIsLoggedIn } from './authentication/auth.effect';
 import PublicRoutes from './publicRoutes';
 import { getProjectsEffect } from './projects/projects.effect';
-import { RouteKeys } from './navigation/routekeys';
+import { RouteKeys, publicRoutes } from './navigation/routekeys';
 import { getTaskStaticPropertiesEffect } from './task/task.effect';
 import { useLocation } from 'react-router-dom';
 import { selectProject } from './projects/projects.slice';
@@ -116,9 +116,14 @@ const App = () => {
   };
 
   const navigateToLogin = () => {
-    if (!isRefreshingAuth && !userInfo?.id) {
+    if (!isRefreshingAuth && !userInfo?.id && !isPublicRoute()) {
       navigate(RouteKeys.login);
     }
+  };
+
+  const isPublicRoute = () => {
+    const path = location.pathname;
+    return publicRoutes.indexOf(path) >= 0;
   };
 
   return (
@@ -130,7 +135,7 @@ const App = () => {
         <Grid item={true} xs={3}>
           {userInfo?.id && <PersistentDrawerLeft />}
         </Grid>
-        <Grid item={true} xs={userInfo?.id ? 9 : 12}>
+        <Grid item={true} xs={userInfo?.id ? 9 : 12} classes={{ root: classes.routeContainer }}>
           <PublicRoutes />
         </Grid>
       </Grid>
@@ -151,7 +156,10 @@ const useStyles = makeStyles((theme: any) => ({
   },
   main: {
     height: '90vh',
-    width: '100vw'
+    width: '100vw',
+  },
+  routeContainer: {
+    paddingTop: '1rem'
   }
 }));
 

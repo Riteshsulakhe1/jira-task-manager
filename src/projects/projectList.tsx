@@ -18,6 +18,7 @@ import { selectProject } from './projects.slice';
 import { useNavigate } from 'react-router-dom';
 import { RouteKeys, getBacklogRoute } from '../navigation/routekeys';
 import Button from '@mui/material/Button';
+import { Typography } from '@mui/material';
 
 const Projects = (props: any) => {
 
@@ -32,6 +33,7 @@ const Projects = (props: any) => {
 
     const Demo = styled('div')(({ theme }) => ({
         backgroundColor: theme.palette.background.paper,
+        width: '100%'
     }));
 
     const gotoProject = (project: Project) => {
@@ -63,12 +65,16 @@ const Projects = (props: any) => {
         ));
     }, [data]);
 
+    const gotoCreateProject = () => {
+        navigate(RouteKeys.createProject);
+    };
+
     return (
         <Grid item={true} xs={12}>
             {isLoading && <Loading />}
             <Demo>
                 <Grid item={true} xs={12} justifyContent={'flex-end'}>
-                    <Button variant="contained" color={'secondary'}>
+                    <Button variant="contained" color={'secondary'} onClick={gotoCreateProject}>
                         Create Project
                     </Button>
                 </Grid>
@@ -76,6 +82,7 @@ const Projects = (props: any) => {
                     {renderList()}
                 </List>
             </Demo>
+            <Typography>You don't have any projects. Please create new project.</Typography>
         </Grid>
     )
 };

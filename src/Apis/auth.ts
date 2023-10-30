@@ -1,5 +1,5 @@
 import axiosInstance from "./axios";
-import { LoginReqBody, GetLoggedInUserBody, LogoutRequest } from '../Types/auth';
+import { LoginReqBody, GetLoggedInUserBody, LogoutRequest, UserDetailsBody } from '../Types/auth';
 import { GenericAbortSignal } from "axios";
 
 export const login = async (data: LoginReqBody) => {
@@ -7,7 +7,7 @@ export const login = async (data: LoginReqBody) => {
         return result.data;
     }).catch(err => {
         console.log('err', err);
-        return err.response.data;
+        throw new Error(err.response.data.message);
     });
 };
 
@@ -24,6 +24,15 @@ export const createOrg = async (body: any) => {
         return result.data;
     }).catch(err => {
         return err;
+    });
+};
+
+export const register = async (body: UserDetailsBody) => {
+    return axiosInstance.post('/auth/register', body).then(result => {
+        return result.data;
+    }).catch(err => {
+        console.log('err', err);
+        throw new Error(err.response.data.message);
     });
 };
 

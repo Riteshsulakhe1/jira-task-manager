@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { InitialState } from '../Types/auth';
-import { signin, whoIsLoggedIn } from './auth.effect';
+import { signin, whoIsLoggedIn, registerEffect } from './auth.effect';
 
 const initialState: InitialState = {
     loading: false,
@@ -20,22 +20,21 @@ const authSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        // Login user effect
-        builder.addCase(signin.fulfilled, (state, action) => {
+        // Login & Register user effect
+        builder.addCase(signin.fulfilled || registerEffect.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
             state.userInfo = action.payload.user;
             state.userToken = { ...action.payload.tokens };
         });
-        builder.addCase(signin.pending, (state, action) => {
+        builder.addCase(signin.pending || registerEffect.pending, (state, action) => {
             state.loading = true;
         })
-        builder.addCase(signin.rejected, (state, action) => {
-            console.log('action =>', action);
+        builder.addCase(signin.rejected || registerEffect.rejected, (state, action) => {
             state.success = false;
             state.loading = false;
             state.userInfo = null;
-            state.error = action.error.message
+            state.error = action.error
         })
 
         // Who is logged in effect
@@ -55,6 +54,23 @@ const authSlice = createSlice({
             state.userToken = null;
             state.success = true;
             state.error = action.error;
+        })
+
+        // Register effect
+        builder.addCase(registerEffect.fulfilled, (state, action) => {
+            state.loading = false;
+            state.success = true;
+            state.userInfo = action.payload.user;
+            state.userToken = { ...action.payload.tokens };
+        });
+        builder.addCase(registerEffect.pending, (state, action) => {
+            state.loading = true;
+        })
+        builder.addCase(registerEffect.rejected, (state, action) => {
+            state.success = false;
+            state.loading = false;
+            state.userInfo = null;
+            state.error = action.error
         })
     },
 })
