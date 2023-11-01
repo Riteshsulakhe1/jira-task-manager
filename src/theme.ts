@@ -22,7 +22,7 @@ const theme = createTheme({
             defaultProps: {
 
                 style: {
-                    // color: 'white'
+                    textTransform: 'capitalize'
                 }
             }
         },
@@ -32,7 +32,7 @@ const theme = createTheme({
                     border: '1 px solid #2684FF'
                 }
             }
-        }
+        },
 
     }
 });

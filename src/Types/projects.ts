@@ -19,3 +19,8 @@ export interface Project {
     labels: Array<string>;
     epics: Array<string>;
 }
+
+export interface CreateProjectBody {
+    name: string;
+    key: string;
+}
