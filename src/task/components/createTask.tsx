@@ -84,7 +84,7 @@ const CreateTask = ({ sprintId, toggleCreateTask, toggleSnackbar }: CreateTaskPr
                 placeholder={"what's need to be done ?"}
                 onChange={handleTitleChange}
                 onKeyDown={handleKeyDown}
-                // onBlur={handleBlur}
+                onBlur={handleBlur}
                 autoFocus={true}
             />
         </Grid>

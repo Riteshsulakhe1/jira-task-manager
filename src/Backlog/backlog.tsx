@@ -1,12 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { getBacklog } from './backlog.effect';
-import SprintCard from './sprint';
+import SprintCard from '../sprint/sprint';
 import { Grid } from '@mui/material';
 import { BacklogSprint } from '../Types/backlog';
 import SnackbarAlert from '../common/snackbar';
 import Loading from '../common/loading';
 import { Severity, SnackbarInfo } from '../Types/common';
+import { createSprint } from '../Apis/sprint';
+import { addNewSprint } from './backlog.slice';
+
 const Backlog = () => {
 
     const dispatch = useAppDispatch();
@@ -38,12 +41,27 @@ const Backlog = () => {
     const renderSprints = useCallback(() => {
         if (!data.length) return null;
         return (data || []).map((item: BacklogSprint) => (
-            <SprintCard key={item._id} sprint={item} toggleSnackbar={toggleSnackbar} />
+            <SprintCard
+                key={item._id}
+                sprint={item}
+                toggleSnackbar={toggleSnackbar}
+                createNewSprint={createNewSprint}
+            />
         ))
     }, [data]);
 
     const toggleSnackbar = (message: string, severity?: Severity) => {
         setSnackbar({ message, severity });
+    };
+
+    const createNewSprint = async () => {
+        if (selectedProject?.id) {
+            const data = await createSprint(selectedProject?.id);
+            toggleSnackbar(data.message);
+            dispatch(addNewSprint(data.sprint));
+        } else {
+            toggleSnackbar('Select project to create new sprint', 'error');
+        }
     };
 
     return (

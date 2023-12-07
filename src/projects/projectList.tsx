@@ -82,7 +82,11 @@ const Projects = (props: any) => {
                     {renderList()}
                 </List>
             </Demo>
-            <Typography>You don't have any projects. Please create new project.</Typography>
+            {
+                !isLoading && data.length === 0 ? (
+                    <Typography>You don't have any projects. Please create new project.</Typography>
+                ) : null
+            }
         </Grid>
     )
 };

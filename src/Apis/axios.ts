@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const DEV_URL = 'http://localhost:3001/v1';
-const PROD_URL = 'https://task-manager-nodejs-xhzl.onrender.com/v1';
+// const PROD_URL = 'https://task-manager-nodejs-xhzl.onrender.com/v1';
 
 const axiosInstance = axios.create({
     baseURL: DEV_URL,

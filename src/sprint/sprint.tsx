@@ -17,8 +17,9 @@ import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 interface SprintProps {
     sprint: BacklogSprint;
     toggleSnackbar: (msg: string, severity?: Severity) => void;
+    createNewSprint: () => void;
 }
-const SprintCard = ({ sprint, toggleSnackbar }: SprintProps) => {
+const SprintCard = ({ sprint, toggleSnackbar, createNewSprint }: SprintProps) => {
     const classes = styles();
 
     const [showCreateTask, setShowCreateTask] = useState<boolean>(false);
@@ -33,6 +34,11 @@ const SprintCard = ({ sprint, toggleSnackbar }: SprintProps) => {
         })
     }, [sprint?.tasks]);
 
+    const onClickCreateSprint = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        createNewSprint();
+        event.stopPropagation();
+    };
+
     return (
         <div>
             <Accordion classes={{ root: classes.card }}>
@@ -42,7 +48,19 @@ const SprintCard = ({ sprint, toggleSnackbar }: SprintProps) => {
                     id={sprint._id}
                     classes={{ root: classes.summary }}
                 >
-                    <Typography>{sprint.name}</Typography>
+                    <Typography sx={{ width: '85%' }}>{sprint.name}</Typography>
+                    {
+                        sprint.isDefault ? (
+                            <Button
+                                variant={'text'}
+                                color={'secondary'}
+                                sx={{ justifyContent: 'flex-start' }}
+                                onClick={onClickCreateSprint}
+                            >
+                                Create Sprint
+                            </Button>
+                        ) : null
+                    }
                 </AccordionSummary>
                 <AccordionDetails>
                     {renderTasks()}
