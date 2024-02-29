@@ -8,7 +8,7 @@ interface Props {
 export default function Loading(props: Props) {
     return (
         <Box sx={{ display: 'flex' }}>
-            <CircularProgress size={props.size || 20} />
+            <CircularProgress size={props.size || 20} color={'secondary'} />
         </Box>
     );
 }

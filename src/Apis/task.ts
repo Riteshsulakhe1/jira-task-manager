@@ -19,8 +19,8 @@ export const createTask = (body: CreateTaskReqBody) => {
 };
 
 export const updateTaskById = (body: Partial<Task>) => {
-    const url = `/task/${body.id}`;
-    delete body.id;
+    const url = `/task/${body._id}`;
+    delete body._id;
     return axiosInstance.put(url, body).then((res: any) => {
         return res.data;
     }).catch(err => {

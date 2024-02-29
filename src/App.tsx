@@ -95,7 +95,7 @@ const App = () => {
   };
 
   const restorePreviousLocation = () => {
-    const previousLocation = JSON.parse(localStorage.getItem('location') || '');
+    const previousLocation = JSON.parse(localStorage.getItem('location') || '{}');
     console.log('previousLocation App==>', previousLocation);
     if (isPathValid(previousLocation?.pathname)) {
       navigate(previousLocation.pathname);
@@ -132,10 +132,11 @@ const App = () => {
         {userInfo?.id && <AppBar />}
       </Grid>
       <Grid container={true} classes={{ root: classes.main }}>
-        <Grid item={true} xs={3}>
+        <Grid item={true} xs={2}>
           {userInfo?.id && <PersistentDrawerLeft />}
         </Grid>
-        <Grid item={true} xs={userInfo?.id ? 9 : 12} classes={{ root: classes.routeContainer }}>
+        <Grid item={true} xs={userInfo?.id ? 10
+           : 12} classes={{ root: classes.routeContainer }}>
           <PublicRoutes />
         </Grid>
       </Grid>
@@ -157,6 +158,7 @@ const useStyles = makeStyles((theme: any) => ({
   main: {
     height: '90vh',
     width: '100vw',
+    overflow: 'hidden'
   },
   routeContainer: {
     paddingTop: '1rem'

@@ -52,6 +52,7 @@ export default function Login() {
     }, [error]);
 
     useEffect(() => {
+        console.log('userInfo==>', userInfo);
         if (userInfo && !userInfo.orgId) {
             navigate(RouteKeys.createOrg);
         } else if (userInfo?.id) {

@@ -24,7 +24,7 @@ const StatusDropdown = ({ status, taskId, sprintId }: StatusDropdownProps) => {
     const handleChange = async (event: SelectChangeEvent) => {
         const currentStatus = event.target.value as TaskStatus;
         setSelectedStaus(currentStatus);
-        const data = await updateTaskById({ status: currentStatus, id: taskId });
+        const data = await updateTaskById({ status: currentStatus, _id: taskId });
         if (data) {
             dispatch(updateTaskInSprint({ task: data, taskId, sprintId }));
         }

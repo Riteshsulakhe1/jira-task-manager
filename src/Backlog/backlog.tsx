@@ -65,7 +65,7 @@ const Backlog = () => {
     };
 
     return (
-        <Grid item={true} xs={12}>
+        <Grid item={true} xs={12} sx={{ height: '89.5vh', overflow: 'auto' }}>
             <div>Backlog Page</div>
             {renderSprints()}
             <SnackbarAlert {...snackbar} onClose={() => toggleSnackbar('')} />

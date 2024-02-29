@@ -26,8 +26,8 @@ const PublicRoutes = () => {
             <Route path="/projects" element={<Projects />} />
             <Route path={RouteKeys.createProject} element={<CreateProject />} />
             <Route path="/projects/:projectId" element={<div>Edit Project</div>} />
-            <Route path="/projects/:projectId/backlog" element={<Backlog />} />
-            <Route path={"/projects/:projectId/" + RouteKeys.board} element={<Board />} />
+            <Route path={"/projects/:projectId" + RouteKeys.backlog} element={<Backlog />} />
+            <Route path={"/projects/:projectId" + RouteKeys.board} element={<Board />} />
         </Routes>
     );
 };

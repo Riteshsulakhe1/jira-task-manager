@@ -19,7 +19,7 @@ const backlogSlice = createSlice({
         },
         updateTaskInSprint: (state, action) => {
             const sprintIndex = state.data.findIndex(sprint => sprint._id === action.payload.sprintId);
-            const taskIndex = state.data[sprintIndex].tasks.findIndex(task => task.id === action.payload.taskId);
+            const taskIndex = state.data[sprintIndex].tasks.findIndex(task => task._id === action.payload.taskId);
             state.data[sprintIndex].tasks[taskIndex] = {
                 ...state.data[sprintIndex].tasks[taskIndex],
                 ...action.payload.task

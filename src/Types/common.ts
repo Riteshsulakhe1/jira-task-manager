@@ -7,7 +7,7 @@ export interface SnackbarInfo {
 }
 
 export interface Task {
-    id: string;
+    _id: string;
     title: string;
     status: string;
     type: string;

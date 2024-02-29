@@ -30,7 +30,7 @@ const SprintCard = ({ sprint, toggleSnackbar, createNewSprint }: SprintProps) =>
 
     const renderTasks = React.useCallback(() => {
         return (sprint?.tasks || []).map((item: Task) => {
-            return <TaskCard key={item.id} task={item} sprintId={sprint._id} />
+            return <TaskCard key={item._id} task={item} sprintId={sprint._id} />
         })
     }, [sprint?.tasks]);
 

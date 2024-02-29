@@ -1,7 +1,7 @@
 export interface Sprint {
     _id: string;
     name: string;
-    isDefault: boolean; // Define it's backlog sprint
+    isDefault?: boolean; // Define it's backlog sprint
     status: string;
     startDate: string;
     endDate: string;
