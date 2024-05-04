@@ -10,7 +10,7 @@ import { setAuthHeader, resetAuthHeader } from './Apis/axios';
 import { whoIsLoggedIn } from './authentication/auth.effect';
 import PublicRoutes from './publicRoutes';
 import { getProjectsEffect } from './projects/projects.effect';
-import { RouteKeys, publicRoutes } from './navigation/routekeys';
+import { RouteKeys, getBoardRoute, publicRoutes } from './navigation/routekeys';
 import { getTaskStaticPropertiesEffect } from './task/task.effect';
 import { useLocation } from 'react-router-dom';
 import { selectProject } from './projects/projects.slice';
@@ -66,10 +66,12 @@ const App = () => {
       });
       if (match.length) {
         const projectId = match[0];
-        console.log('projectId=>', projectId);
         const selectedProject = projects.find(project => project.id === projectId);
-        console.log('selectedProject=>', selectedProject);
         dispatch(selectProject(selectedProject));
+      } else {
+        // If no project selected then selects the first one and navigate to board
+        dispatch(selectProject(projects[0]));
+        navigateToBoard(projects[0].id);
       }
     }
   }, [projects]);
@@ -96,7 +98,6 @@ const App = () => {
 
   const restorePreviousLocation = () => {
     const previousLocation = JSON.parse(localStorage.getItem('location') || '{}');
-    console.log('previousLocation App==>', previousLocation);
     if (isPathValid(previousLocation?.pathname)) {
       navigate(previousLocation.pathname);
       localStorage.removeItem('location');
@@ -121,6 +122,10 @@ const App = () => {
     }
   };
 
+  const navigateToBoard = (projectId: string) => {
+    navigate(getBoardRoute(projectId));
+  }
+
   const isPublicRoute = () => {
     const path = location.pathname;
     return publicRoutes.indexOf(path) >= 0;
@@ -136,7 +141,7 @@ const App = () => {
           {userInfo?.id && <PersistentDrawerLeft />}
         </Grid>
         <Grid item={true} xs={userInfo?.id ? 10
-           : 12} classes={{ root: classes.routeContainer }}>
+          : 12} classes={{ root: classes.routeContainer }}>
           <PublicRoutes />
         </Grid>
       </Grid>

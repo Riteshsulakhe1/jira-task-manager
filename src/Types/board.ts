@@ -1,13 +1,13 @@
 import { Task } from "./common";
 import { Sprint } from "./sprint";
 
-export interface BoardItem {
+export interface ColumnItem {
     _id: string;
     tasks: Array<Task>;
 }
 
 export interface BoardSprint extends Sprint {
-    board: Array<BoardItem>;
+    board: Array<ColumnItem>;
 }
 
 export interface InitialBoardStates {

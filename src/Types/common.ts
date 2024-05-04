@@ -31,7 +31,8 @@ export interface Task {
 
 export enum DrawerMenuKeys {
     BACKLOG = 'Backlog',
-    BOARD = 'Board'
+    BOARD = 'Board',
+    ISSUES = 'Issues'
 }
 
 export interface DrawerMenuItem {

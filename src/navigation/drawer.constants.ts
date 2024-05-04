@@ -8,5 +8,9 @@ export const drawerLinks: Array<DrawerMenuItem> = [
     {
         name: DrawerMenuKeys.BOARD,
         link: '',
+    },
+    {
+        name: DrawerMenuKeys.ISSUES,
+        link: '',
     }
 ];
