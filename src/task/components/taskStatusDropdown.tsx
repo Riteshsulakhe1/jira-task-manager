@@ -5,8 +5,9 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Grid } from '@mui/material';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { updateTaskById } from '../../Apis/task';
+import { updateTaskById, updateTaskStatus } from '../../Apis/task';
 import { updateTaskInSprint } from '../../Backlog/backlog.slice';
+import { UpdateTaskStatusReqBody } from '../../Types/task';
 
 interface StatusDropdownProps {
     status: TaskStatus;
@@ -24,7 +25,12 @@ const StatusDropdown = ({ status, taskId, sprintId }: StatusDropdownProps) => {
     const handleChange = async (event: SelectChangeEvent) => {
         const currentStatus = event.target.value as TaskStatus;
         setSelectedStaus(currentStatus);
-        const data = await updateTaskById({ status: currentStatus, _id: taskId });
+        const body: UpdateTaskStatusReqBody = {
+            taskId,
+            fromStatus: status,
+            toStatus: currentStatus
+        };
+        const data = await updateTaskStatus(body);
         if (data) {
             dispatch(updateTaskInSprint({ task: data, taskId, sprintId }));
         }
