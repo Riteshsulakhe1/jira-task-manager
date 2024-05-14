@@ -13,6 +13,8 @@ import { BordHeader } from './components/boardHeader';
 import EmptyScreen from './components/emptyScreen';
 import Columns from './components/columns';
 import DragOverlayTaskCard from './components/dragOverlayTaskCard';
+import { updateTaskStatus } from '../Apis/task';
+import { UpdateTaskStatusReqBody } from '../Types/task';
 
 const Board = () => {
     const dispatch = useAppDispatch();
@@ -95,13 +97,21 @@ const Board = () => {
 
                 // Move task to destination
                 const isDroppedOnColumn = isDestinationTypeColumn(over.id as string);
+                let destinationColIndex: number;
                 if (isDroppedOnColumn) {
-                    const destinationColIndex = getColumnIndex(over.id as string);
+                    destinationColIndex = getColumnIndex(over.id as string);
                     allColumns[destinationColIndex].tasks.push(task);
                 } else {
-                    const destinationColIndex = getColumnIndex(over.data.current?.sortable.containerId);
+                    destinationColIndex = getColumnIndex(over.data.current?.sortable.containerId);
                     allColumns[destinationColIndex].tasks.splice(over.data.current?.sortable.index, 0, task);
                 }
+                // Update task status
+                const body: UpdateTaskStatusReqBody = {
+                    taskId: task._id,
+                    fromStatus: allColumns[sourceColIndex]._id,
+                    toStatus: allColumns[destinationColIndex]._id
+                };
+                updateTaskStatus(body);
             }
             setColumns(allColumns);
             setActiveDraggingTask(null);

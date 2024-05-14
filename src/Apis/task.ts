@@ -36,5 +36,6 @@ export const updateTaskStatus = (body: UpdateTaskStatusReqBody) => {
         return res.data;
     }).catch(err => {
         console.log('err in update task status', err);
+        throw new Error(err.response.data.message);
     });
 }
