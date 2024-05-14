@@ -2,6 +2,7 @@ import React from "react";
 import { SortableContext } from "@dnd-kit/sortable";
 import Column from "./column";
 import { ColumnItem } from "../../Types/board";
+import { Grid } from "@mui/material";
 
 interface ColumnsProps {
     sprintId: string;
@@ -14,15 +15,17 @@ const Columns = React.memo((props: ColumnsProps) => {
     return (
         columns.length ?
             <SortableContext id={'columns-container'} items={columns.map(item => item._id)}>
-                {
-                    columns.map((column: ColumnItem) => (
-                        <Column
-                            column={column}
-                            sprintId={sprintId}
-                            taskType={taskType}
-                        />
-                    ))
-                }
+                <Grid container={true}>
+                    {
+                        columns.map((column: ColumnItem) => (
+                            <Column
+                                column={column}
+                                sprintId={sprintId}
+                                taskType={taskType}
+                            />
+                        ))
+                    }
+                </Grid>
             </SortableContext>
             : null
     );

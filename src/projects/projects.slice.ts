@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { InitialStates } from '../Types/projects';
-import { getProjectsEffect } from "./projects.effect";
+import { getProjectTaskStatusEffect, getProjectsEffect } from "./projects.effect";
 
 const initialState: InitialStates = {
     isLoading: false,
@@ -11,7 +11,8 @@ const initialState: InitialStates = {
     page: 1,
     totalPages: 1,
     totalResults: 0,
-    selectedProject: null
+    selectedProject: null,
+    selectedProjectTaskStatusList: null
 }
 
 const projectSlice = createSlice({
@@ -20,7 +21,7 @@ const projectSlice = createSlice({
     reducers: {
         selectProject: (state, action) => {
             state.selectedProject = action.payload;
-        }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getProjectsEffect.pending, (state, action) => {
@@ -46,6 +47,11 @@ const projectSlice = createSlice({
             state.success = false;
             state.error = action.error;
         })
+
+        // Selected project task status list
+        builder.addCase(getProjectTaskStatusEffect.fulfilled, (state, action) => {
+            state.selectedProjectTaskStatusList = action.payload.taskStatusList;
+        });
     }
 });
 

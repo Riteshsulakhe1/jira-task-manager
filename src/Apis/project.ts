@@ -18,3 +18,12 @@ export const createProject = (body: CreateProjectBody) => {
         throw new Error(err.response.data.message);
     });
 }
+
+export const getTaskStatusList = (projectId: string) => {
+    const url = `/project/${projectId}/getTaskStatusList`;
+    return axiosInstance.get(url).then((res: any) => {
+        return res.data;
+    }).catch((err) => {
+        throw new Error(err.response.data.message);
+    });
+}

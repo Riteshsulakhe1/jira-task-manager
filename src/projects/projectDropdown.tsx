@@ -9,6 +9,7 @@ import { selectProject } from './projects.slice';
 import { useNavigate } from 'react-router-dom';
 import { getBacklogRoute } from '../navigation/routekeys';
 import { makeStyles } from '@mui/styles';
+import { getProjectTaskStatusEffect } from './projects.effect';
 
 export default function ProjectDropdown() {
     const [selectedProjectId, setSelectedProjectId] = React.useState('');
@@ -25,6 +26,9 @@ export default function ProjectDropdown() {
     React.useEffect(() => {
         if (selectedProject?.id && !selectedProjectId) {
             setSelectedProjectId(selectedProject.id);
+        }
+        if (selectedProject?.id) {
+            dispatch(getProjectTaskStatusEffect(selectedProject.id));
         }
     }, [selectedProject]);
 

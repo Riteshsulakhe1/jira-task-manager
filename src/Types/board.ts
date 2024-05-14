@@ -3,6 +3,8 @@ import { Sprint } from "./sprint";
 
 export interface ColumnItem {
     _id: string;
+    name: string;
+    index: number;
     tasks: Array<Task>;
 }
 

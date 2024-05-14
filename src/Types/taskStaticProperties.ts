@@ -5,13 +5,6 @@ export enum TaskType {
     SUB_TASK = 'sub-task',
 }
 
-export enum TaskStatus {
-    TO_DO = 'To Do',
-    IN_PROGRESS = 'In Progress',
-    READY_FOR_TESTING = 'Ready for testing',
-    DONE = 'Done',
-}
-
 export enum TaskPriority {
     LOW = 'low',
     MEDIUM = 'medium',
@@ -38,13 +31,12 @@ export enum LinkedIssueType {
 }
 
 export type TaskSelectItem = {
-    label: TaskStatus;
-    value: TaskStatus;
+    label: TaskType;
+    value: TaskType;
 }
 
 export interface TaskStaticProperties {
     taskType: Array<TaskSelectItem>;
-    taskStatus: Array<TaskSelectItem>;
     taskPriority: typeof TaskPriority;
     epicInitials: EpicInitials;
     labelInitials: LabelInitials;

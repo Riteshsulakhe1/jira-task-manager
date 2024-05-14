@@ -9,7 +9,6 @@ import { Task } from '../Types/common';
 import { Grid, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import StatusDropdown from './components/taskStatusDropdown';
-import { TaskStatus } from '../Types/taskStaticProperties';
 import Assignee from './components/assignee';
 import TaskActionMenu from './components/taskActionMenu';
 
@@ -30,7 +29,7 @@ const TaskCard = (props: Props) => {
                     </Typography>
                 </Grid>
                 <Grid item={true} xs={5} classes={{ root: classes.contentAction }}>
-                    <StatusDropdown status={task.status as TaskStatus} taskId={task._id} sprintId={sprintId} />
+                    <StatusDropdown status={task.status} taskId={task._id} sprintId={sprintId} />
                     <Assignee assignee={task.assignedTo} />
                     <TaskActionMenu taskId={task._id} />
                 </Grid>

@@ -19,14 +19,14 @@ const Column = (props: ColumnProps) => {
     return (
         <Grid
             item={true}
-            xs={4}
+            xs={3}
             key={column._id}
             classes={{ root: classes.statusCol }}
         >
             <Draggable id={column._id} data={{ type: 'column' }}>
                 <Droppable id={column._id} data={{ accepts: taskType }}>
                     <Paper classes={{ root: classes.colTitle }}>
-                        {column._id + `(${column.tasks.length})`}
+                        {column.name + `(${column.tasks.length})`}
                     </Paper>
                     <SortableContext id={column._id} items={column.tasks.map(tsk => tsk._id)}>
                         {

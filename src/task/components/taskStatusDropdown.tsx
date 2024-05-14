@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { TaskStatus, TaskSelectItem } from '../../Types/taskStaticProperties';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -8,22 +7,24 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { updateTaskById, updateTaskStatus } from '../../Apis/task';
 import { updateTaskInSprint } from '../../Backlog/backlog.slice';
 import { UpdateTaskStatusReqBody } from '../../Types/task';
+import { taskStatusListSelector } from '../../projects/projects.selector';
+import { ProjectTaskStatus } from '../../Types/projects';
 
 interface StatusDropdownProps {
-    status: TaskStatus;
+    status: string;
     sprintId: string;
     taskId: string;
 }
 
 const StatusDropdown = ({ status, taskId, sprintId }: StatusDropdownProps) => {
-    const [selectedStatus, setSelectedStaus] = useState<TaskStatus>(status || TaskStatus.TO_DO);
-    const statusList = useAppSelector(state => state.taskStaticProperties.data?.taskStatus);
+    const [selectedStatus, setSelectedStaus] = useState<string>(status || '');
+    const statusList: Array<ProjectTaskStatus> | null = useAppSelector(taskStatusListSelector);
     // const projectId = useAppSelector(state => state.project.selectedProject?.id);
 
     const dispatch = useAppDispatch();
 
     const handleChange = async (event: SelectChangeEvent) => {
-        const currentStatus = event.target.value as TaskStatus;
+        const currentStatus = event.target.value as string;
         setSelectedStaus(currentStatus);
         const body: UpdateTaskStatusReqBody = {
             taskId,
@@ -39,9 +40,9 @@ const StatusDropdown = ({ status, taskId, sprintId }: StatusDropdownProps) => {
     const renderStatus = useCallback(() => {
         if (statusList?.length) {
             return (
-                statusList.map((status: TaskSelectItem) => (
-                    <MenuItem key={status.value} dense={true} value={status.value}>
-                        {status.label}
+                statusList.map((status: ProjectTaskStatus) => (
+                    <MenuItem key={status.id} dense={true} value={status.id}>
+                        {status.name}
                     </MenuItem>
                 ))
             );

@@ -1,5 +1,3 @@
-import { TaskStatus } from "./taskStaticProperties";
-
 export interface CreateTaskReqBody {
     title: string;
     type: string;
@@ -9,6 +7,6 @@ export interface CreateTaskReqBody {
 
 export interface UpdateTaskStatusReqBody {
     taskId: string;
-    fromStatus: TaskStatus;
-    toStatus: TaskStatus;
+    fromStatus: string;
+    toStatus: string;
 }
