@@ -5,7 +5,6 @@ import { GetLoggedInUserBody, LoginReqBody, UserDetailsBody } from '../Types/aut
 export const signin = createAsyncThunk(
     'user login',
     async (data: LoginReqBody) => await login(data),
-
 );
 
 export const whoIsLoggedIn = createAsyncThunk(

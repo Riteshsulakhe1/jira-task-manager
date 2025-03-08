@@ -13,7 +13,6 @@ import CreateTask from '../task/components/createTask';
 import Button from '@mui/material/Button';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 
-
 interface SprintProps {
     sprint: BacklogSprint;
     toggleSnackbar: (msg: string, severity?: Severity) => void;
@@ -41,6 +40,7 @@ const SprintCard = ({ sprint, toggleSnackbar, createNewSprint }: SprintProps) =>
 
     return (
         <div>
+
             <Accordion classes={{ root: classes.card }}>
                 <AccordionSummary
                     expandIcon={<ArrowForwardIosSharpIcon fontSize={'small'} />}

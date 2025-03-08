@@ -1,5 +1,5 @@
 import { Task } from "../Types/common";
-import { CreateTaskReqBody } from "../Types/task";
+import { CreateTaskReqBody, UpdateTaskStatusReqBody } from "../Types/task";
 import axiosInstance from "./axios"
 
 export const getTaskStaticProperties = () => {
@@ -27,3 +27,15 @@ export const updateTaskById = (body: Partial<Task>) => {
         console.log('err in update task', err);
     });
 };
+
+export const updateTaskStatus = (body: UpdateTaskStatusReqBody) => {
+    const data: any = { ...body };
+    const url = `/task/${data.taskId}/updateStatus`;
+    delete data.taskId;
+    return axiosInstance.put(url, data).then((res: any) => {
+        return res.data;
+    }).catch(err => {
+        console.log('err in update task status', err);
+        throw new Error(err.response.data.message);
+    });
+}

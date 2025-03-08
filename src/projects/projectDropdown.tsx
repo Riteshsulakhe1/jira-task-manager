@@ -1,5 +1,4 @@
 import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -9,10 +8,20 @@ import { selectProject } from './projects.slice';
 import { useNavigate } from 'react-router-dom';
 import { getBacklogRoute } from '../navigation/routekeys';
 import { makeStyles } from '@mui/styles';
+import { getProjectSprintListEffect, getProjectTaskStatusEffect } from './projects.effect';
 
-export default function ProjectDropdown() {
+interface ProjectDropdownProps {
+    fromCreateTaskModal?: boolean;
+    onChangeProject?: (projectId: string) => void;
+}
+
+export default function ProjectDropdown(props: ProjectDropdownProps) {
+    const { fromCreateTaskModal = false, onChangeProject } = props;
+
     const [selectedProjectId, setSelectedProjectId] = React.useState('');
-
+    /**
+     * TODO => Use selectedProjectIdSelector to get select projectId from redux
+     */
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const classes = styles();
@@ -23,16 +32,64 @@ export default function ProjectDropdown() {
     } = useAppSelector(state => state.project);
 
     React.useEffect(() => {
-        if (selectedProject?.id && !selectedProjectId) {
-            setSelectedProjectId(selectedProject.id);
-        }
+        onUpdateSelectedProject();
     }, [selectedProject]);
 
+    const onUpdateSelectedProject = () => {
+        setProjectId();
+        if (fromCreateTaskModal && onChangeProject) {
+            onChangeProject(selectedProject?.id || '');
+        } else {
+            fetchProjectTaskStatus();
+            fetchProjectSprintList();
+        }
+    };
+
+    const setProjectId = () => {
+        const projectId = getSelectedProjectId();
+        if (selectedProjectId !== projectId) {
+            setSelectedProjectId(projectId);
+        }
+    };
+
+    const fetchProjectTaskStatus = () => {
+        const projectId = getSelectedProjectId();
+        if (projectId) {
+            dispatch(getProjectTaskStatusEffect(projectId));
+        }
+    };
+
+    const fetchProjectSprintList = () => {
+        const projectId = getSelectedProjectId();
+        if (projectId) {
+            dispatch(getProjectSprintListEffect(projectId));
+        }
+    }
+
+    const getSelectedProjectId = () => (
+        selectedProject?.id || ''
+    );
+
+    const onChange = (event: SelectChangeEvent) => {
+        if (fromCreateTaskModal && typeof onChangeProject === 'function') {
+            onChangeProject(event.target.value);
+        } else {
+            handleChange(event);
+        }
+    };
+
     const handleChange = (event: SelectChangeEvent) => {
-        setSelectedProjectId(event.target.value);
         const project = data.filter((item: Project) => item.id === event.target.value)[0] || null;
         dispatch(selectProject(project));
         navigate(getBacklogRoute(project.id), { state: { projectId: project.id } });
+    };
+
+    const isFromCreateTaskModal = () => {
+        return fromCreateTaskModal && onChangeProject && typeof onChangeProject === 'function';
+    };
+
+    const shouldAllowNoneOption = () => {
+        return isFromCreateTaskModal() ? false : true;
     };
 
     const renderMenuItem = React.useCallback(() => {
@@ -41,16 +98,30 @@ export default function ProjectDropdown() {
         ))
     }, [data]);
 
-    return (
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small" classes={{ root: classes.form }}>
-            <Select
-                id="project-dropdown"
-                value={selectedProjectId}
-                onChange={handleChange}
-            >
+    const renderNoneOption = React.useCallback(() => {
+        if (shouldAllowNoneOption()) {
+            return (
                 <MenuItem value="">
                     <em>None</em>
                 </MenuItem>
+            );
+        }
+        return null;
+    }, []);
+
+    return (
+        <FormControl
+            fullWidth={true}
+            sx={{ m: fromCreateTaskModal ? 0 : 1, minWidth: 120, maxWidth: '50%' }}
+            size="small"
+            classes={{ root: classes.form }}
+        >
+            <Select
+                id="project-dropdown"
+                value={selectedProjectId}
+                onChange={onChange}
+            >
+                {renderNoneOption()}
                 {renderMenuItem()}
             </Select>
         </FormControl>

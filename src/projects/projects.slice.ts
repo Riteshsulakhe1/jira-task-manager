@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { InitialStates } from '../Types/projects';
-import { getProjectsEffect } from "./projects.effect";
+import { getProjectSprintListEffect, getProjectTaskStatusEffect, getProjectsEffect } from "./projects.effect";
 
 const initialState: InitialStates = {
     isLoading: false,
@@ -11,7 +11,9 @@ const initialState: InitialStates = {
     page: 1,
     totalPages: 1,
     totalResults: 0,
-    selectedProject: null
+    selectedProject: null,
+    selectedProjectTaskStatusList: null,
+    selectedProjectSprints: []
 }
 
 const projectSlice = createSlice({
@@ -20,7 +22,11 @@ const projectSlice = createSlice({
     reducers: {
         selectProject: (state, action) => {
             state.selectedProject = action.payload;
-        }
+            // Clear task status list
+            state.selectedProjectTaskStatusList = null;
+            // Clear sprint list
+            state.selectedProjectSprints = [];
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getProjectsEffect.pending, (state, action) => {
@@ -46,6 +52,22 @@ const projectSlice = createSlice({
             state.success = false;
             state.error = action.error;
         })
+
+        // Selected project task status list
+        builder.addCase(getProjectTaskStatusEffect.fulfilled, (state, action) => {
+            state.selectedProjectTaskStatusList = action.payload.taskStatusList;
+        });
+        builder.addCase(getProjectTaskStatusEffect.rejected, (state, action) => {
+            state.selectedProjectTaskStatusList = null;
+        });
+
+        // Selected project sprint list
+        builder.addCase(getProjectSprintListEffect.fulfilled, (state, action) => {
+            state.selectedProjectSprints = action.payload.sprintList;
+        });
+        builder.addCase(getProjectSprintListEffect.rejected, (state, action) => {
+            state.selectedProjectSprints = [];
+        });
     }
 });
 

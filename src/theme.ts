@@ -1,10 +1,10 @@
 import { createTheme } from '@mui/material/styles';
-import { green, purple, grey } from '@mui/material/colors';
+import { green, purple, grey, deepPurple } from '@mui/material/colors';
 
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#ffff',
+            main: deepPurple[800],
         },
         secondary: {
             main: '#0052CC',
@@ -20,7 +20,13 @@ const theme = createTheme({
         },
         MuiButton: {
             defaultProps: {
-
+                style: {
+                    textTransform: 'capitalize'
+                }
+            }
+        },
+        MuiSelect: {
+            defaultProps: {
                 style: {
                     textTransform: 'capitalize'
                 }

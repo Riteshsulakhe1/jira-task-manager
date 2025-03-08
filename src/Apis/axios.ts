@@ -19,3 +19,5 @@ export const setAuthHeader = (token: string) => {
 export const resetAuthHeader = () => {
     axiosInstance.defaults.headers.common['Authorization'] = '';
 };
+
+// Create interceptor for handling error & for refresh auth token expired

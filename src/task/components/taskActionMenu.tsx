@@ -26,6 +26,7 @@ const TaskActionMenu = ({ taskId }: TaskActionMenuProps) => {
                 aria-controls={open ? 'task-action-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
+                sx={{ minWidth: 'fit-content', padding: 0 }}
                 onClick={handleClick}
             >
                 <MoreHorizIcon color={'disabled'} />

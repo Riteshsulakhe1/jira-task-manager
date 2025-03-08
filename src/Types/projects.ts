@@ -8,6 +8,8 @@ export interface InitialStates {
     totalPages: number;
     totalResults: number;
     selectedProject: Project | null;
+    selectedProjectTaskStatusList: Array<ProjectTaskStatus> | null;
+    selectedProjectSprints: Array<SprintList>;
 }
 
 export interface Project {
@@ -20,7 +22,17 @@ export interface Project {
     epics: Array<string>;
 }
 
+export interface ProjectTaskStatus {
+    id: string;
+    name: string;
+    index: number;
+    isInitial: boolean;
+}
 export interface CreateProjectBody {
     name: string;
     key: string;
+}
+export interface SprintList {
+    id: string;
+    name: string;
 }

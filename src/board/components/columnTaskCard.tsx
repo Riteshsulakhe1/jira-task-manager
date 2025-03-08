@@ -1,23 +1,19 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Task } from '../../Types/common';
 import { Grid, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import StatusDropdown from './taskStatusDropdown';
-import { TaskStatus } from '../../Types/taskStaticProperties';
-import Assignee from './assignee';
-import TaskActionMenu from './taskActionMenu';
+import Assignee from '../../task/components/assignee';
+import TaskActionMenu from '../../task/components/taskActionMenu';
 
 interface Props {
     task: Task,
     sprintId: string;
 }
-const BoardTaskCard = (props: Props) => {
+const ColumnTaskCard = (props: Props) => {
     const { task, sprintId } = props;
     const classes = styles();
 
@@ -25,28 +21,28 @@ const BoardTaskCard = (props: Props) => {
         <Card classes={{ root: classes.card }}>
             <CardContent classes={{ root: classes.content }}>
                 <Grid xs={12} item={true} classes={{ root: classes.cardTitle }}>
-                    <Grid item={true} xs={10}>
-                        <Typography component="div" noWrap={true}>
+                    <Grid item={true} xs={9}>
+                        <Typography component="div">
                             {task.title}
                         </Typography>
                     </Grid>
-                    <Grid item={true} xs={2}>
+                    <Grid item={true} xs={3} classes={{ root: classes.cardRightAction }}>
                         <TaskActionMenu taskId={task._id} />
+                        <Assignee assignee={task.assignedTo} />
                     </Grid>
                 </Grid>
             </CardContent>
             <CardActions>
-                <Assignee assignee={task.assignedTo} />
             </CardActions>
         </Card>
     );
 }
-export default BoardTaskCard;
+export default ColumnTaskCard;
 
 const styles = makeStyles((theme: Theme) => ({
     card: {
         width: '100%',
-        padding: '0rem',
+        padding: '0.25rem',
         borderBottom: '0.5px solid grey',
         borderRadius: '0rem',
         marginTop: '0.25rem',
@@ -64,5 +60,12 @@ const styles = makeStyles((theme: Theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-end'
+    },
+    cardRightAction: {
+        display: 'flex',
+        flexDirection: 'column !important' as any,
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+        height: '100%'
     }
 }))

@@ -8,8 +8,7 @@ import Typography from '@mui/material/Typography';
 import { Task } from '../Types/common';
 import { Grid, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import StatusDropdown from './components/taskStatusDropdown';
-import { TaskStatus } from '../Types/taskStaticProperties';
+import StatusDropdown from './components/statusDropdown';
 import Assignee from './components/assignee';
 import TaskActionMenu from './components/taskActionMenu';
 
@@ -30,7 +29,7 @@ const TaskCard = (props: Props) => {
                     </Typography>
                 </Grid>
                 <Grid item={true} xs={5} classes={{ root: classes.contentAction }}>
-                    <StatusDropdown status={task.status as TaskStatus} taskId={task._id} sprintId={sprintId} />
+                    <StatusDropdown status={task.status} taskId={task._id} sprintId={sprintId} />
                     <Assignee assignee={task.assignedTo} />
                     <TaskActionMenu taskId={task._id} />
                 </Grid>
@@ -42,11 +41,11 @@ export default TaskCard;
 
 const styles = makeStyles((theme: Theme) => ({
     card: {
-        margin: '0rem',
         width: '100%',
-        padding: '0rem',
         borderBottom: '0.5px solid grey',
-        borderRadius: '0rem'
+        borderRadius: '0rem',
+        padding: '0.5rem',
+        marginBottom: '0.25rem'
     },
     cardTitle: {
         display: 'flex',
