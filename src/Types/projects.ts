@@ -9,6 +9,7 @@ export interface InitialStates {
     totalResults: number;
     selectedProject: Project | null;
     selectedProjectTaskStatusList: Array<ProjectTaskStatus> | null;
+    selectedProjectSprints: Array<SprintList>;
 }
 
 export interface Project {
@@ -30,4 +31,8 @@ export interface ProjectTaskStatus {
 export interface CreateProjectBody {
     name: string;
     key: string;
+}
+export interface SprintList {
+    id: string;
+    name: string;
 }

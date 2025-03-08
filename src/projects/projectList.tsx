@@ -83,7 +83,7 @@ const Projects = (props: any) => {
                 </List>
             </Demo>
             {
-                !isLoading && data.length === 0 ? (
+                !isLoading && data?.length === 0 ? (
                     <Typography>You don't have any projects. Please create new project.</Typography>
                 ) : null
             }

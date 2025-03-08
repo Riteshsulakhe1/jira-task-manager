@@ -1,3 +1,4 @@
+import React from 'react';
 import { makeStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import { Draggable, Droppable } from "../../common/dragDropHelper";
@@ -56,7 +57,10 @@ const useStyles = makeStyles(theme => ({
         position: 'sticky',
         top: 0,
         zIndex: 1,
-        borderRadius: '0px !important'
+        borderBottomRightRadius: '0px !important',
+        borderBottomLeftRadius: '0px !important',
+        paddingTop: '0.4rem',
+        paddingLeft: '0.25rem'
     },
 }));
 export default Column;

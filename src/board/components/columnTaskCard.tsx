@@ -21,18 +21,18 @@ const ColumnTaskCard = (props: Props) => {
         <Card classes={{ root: classes.card }}>
             <CardContent classes={{ root: classes.content }}>
                 <Grid xs={12} item={true} classes={{ root: classes.cardTitle }}>
-                    <Grid item={true} xs={10}>
-                        <Typography component="div" noWrap={true}>
+                    <Grid item={true} xs={9}>
+                        <Typography component="div">
                             {task.title}
                         </Typography>
                     </Grid>
-                    <Grid item={true} xs={2}>
+                    <Grid item={true} xs={3} classes={{ root: classes.cardRightAction }}>
                         <TaskActionMenu taskId={task._id} />
+                        <Assignee assignee={task.assignedTo} />
                     </Grid>
                 </Grid>
             </CardContent>
             <CardActions>
-                <Assignee assignee={task.assignedTo} />
             </CardActions>
         </Card>
     );
@@ -42,7 +42,7 @@ export default ColumnTaskCard;
 const styles = makeStyles((theme: Theme) => ({
     card: {
         width: '100%',
-        padding: '0rem',
+        padding: '0.25rem',
         borderBottom: '0.5px solid grey',
         borderRadius: '0rem',
         marginTop: '0.25rem',
@@ -60,5 +60,12 @@ const styles = makeStyles((theme: Theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-end'
+    },
+    cardRightAction: {
+        display: 'flex',
+        flexDirection: 'column !important' as any,
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+        height: '100%'
     }
 }))

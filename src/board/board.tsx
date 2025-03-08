@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { getBoardEffect } from './board.effect';
 import Loading from '../common/loading';
@@ -15,6 +15,7 @@ import Columns from './components/columns';
 import DragOverlayTaskCard from './components/dragOverlayTaskCard';
 import { updateTaskStatus } from '../Apis/task';
 import { UpdateTaskStatusReqBody } from '../Types/task';
+import Filters from './components/filter';
 
 const Board = () => {
     const dispatch = useAppDispatch();
@@ -56,7 +57,6 @@ const Board = () => {
     };
 
     const handleDragStart = (event: DragStartEvent) => {
-        console.log('drag start==>', event);
         const taskId = event.active.id as string;
         const colId = event.active.data.current?.sortable?.containerId;
         const task = getTaskByColIdAndTaskId(colId, taskId);
@@ -75,7 +75,6 @@ const Board = () => {
     };
 
     const handleDragEnd = (event: DragEndEvent) => {
-        console.log('on drag end==>', event);
         const { active, over } = event;
         if (over && active) {
             // Move columns
@@ -137,6 +136,7 @@ const Board = () => {
                 ) : columns.length ? (
                     <>
                         <BordHeader activeSprint={activeSprint} />
+                        <Filters />
                         <DndContext
                             onDragEnd={handleDragEnd}
                             onDragStart={handleDragStart}
@@ -155,7 +155,7 @@ const Board = () => {
                         </DndContext>
                     </>
                 ) : (
-                    <EmptyScreen />
+                    !isLoading && !columns.length ? <EmptyScreen /> : null
                 )
             }
         </Container>
@@ -166,7 +166,9 @@ export default Board;
 
 const styles = makeStyles(theme => ({
     parentCol: {
-        height: '78vh',
+        height: '79vh',
         overflow: 'auto',
+        margin: '0px !important',
+        padding: '0px !important'
     },
 }));

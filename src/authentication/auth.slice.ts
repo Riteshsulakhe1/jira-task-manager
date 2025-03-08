@@ -21,16 +21,16 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         // Login & Register user effect
-        builder.addCase(signin.fulfilled || registerEffect.fulfilled, (state, action) => {
+        builder.addCase(signin.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
             state.userInfo = action.payload.user;
             state.userToken = { ...action.payload.tokens };
         });
-        builder.addCase(signin.pending || registerEffect.pending, (state, action) => {
+        builder.addCase(signin.pending, (state, action) => {
             state.loading = true;
         })
-        builder.addCase(signin.rejected || registerEffect.rejected, (state, action) => {
+        builder.addCase(signin.rejected, (state, action) => {
             state.success = false;
             state.loading = false;
             state.userInfo = null;

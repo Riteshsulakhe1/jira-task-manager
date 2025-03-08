@@ -15,6 +15,7 @@ import { getTaskStaticPropertiesEffect } from './task/task.effect';
 import { useLocation } from 'react-router-dom';
 import { selectProject } from './projects/projects.slice';
 import { UserInfo } from './Types/auth';
+import { Project } from './Types/projects';
 
 const App = () => {
 
@@ -28,64 +29,80 @@ const App = () => {
   const userInfo: UserInfo | null = useAppSelector(state => state.auth.userInfo);
   const userToken = useAppSelector(state => state.auth.userToken);
   const isRefreshingAuth = useAppSelector(state => state.auth.refreshingAuth);
-  const projects = useAppSelector(state => state.project.data);
+  const projects = useAppSelector(state => state.project.data || []);
 
   const mongoIdRegex = /^[0-9a-fA-F]{24}$/;
 
   useEffect(() => {
-    storeCurrentLocation();
-    if (!userInfo?.id) {
-      retriveLoggedInUser();
-    }
+    onInit();
   }, []);
 
   useEffect(() => {
-    if (userInfo) {
-      // Store logged in user
-      localStorage.setItem('st', JSON.stringify(userToken));
-      setAuthHeader(userToken ? userToken?.access.token : '');
-    }
-    if (userInfo && !userInfo.orgId) {
-      navigate(RouteKeys.createOrg);
-    } else if (userInfo && userInfo?.id) {
-      // Get all projects
-      fetchProjects();
-      // Restore previous route
-      restorePreviousLocation();
-      // Fetch task static properties
-      fetchTaskStaticProperties();
-    } else {
-      navigateToLogin();
-    }
+    console.log('onLoggedInUserRetrived==>', userInfo, isRefreshingAuth);
+    onLoggedInUserRetrived();
   }, [userInfo, isRefreshingAuth]);
 
+
   useEffect(() => {
-    if (projects?.length) {
-      const match = location.pathname.split('/').filter((path: string) => {
-        return path.match(mongoIdRegex);
-      });
-      if (match.length) {
-        const projectId = match[0];
-        const selectedProject = projects.find(project => project.id === projectId);
-        dispatch(selectProject(selectedProject));
-      } else {
-        // If no project selected then selects the first one and navigate to board
-        dispatch(selectProject(projects[0]));
-        navigateToBoard(projects[0].id);
-      }
-    }
+    onProjectsFetched();
   }, [projects]);
 
+  const onInit = () => {
+    storeCurrentLocation();
+    if (!userInfo?.id) {
+      console.log('retriveLoggedInUser==>',);
+      retriveLoggedInUser();
+    }
+  };
+
   const storeCurrentLocation = () => {
-    localStorage.setItem('location', JSON.stringify(location));
+    if (!isPublicRoute()) {
+      localStorage.setItem('location', JSON.stringify(location));
+    }
   };
 
   const retriveLoggedInUser = () => {
-    const refresh = localStorage.getItem('st');
+    const refresh = localStorage.getItem('st') || '';
     const tokens = refresh ? JSON.parse(refresh) : {};
     if (tokens?.access) {
       dispatch(whoIsLoggedIn({ refreshToken: tokens.refresh.token }))
     }
+  };
+
+  const onLoggedInUserRetrived = () => {
+    if (isRefreshingAuth) return;
+    console.log('userInfo==>', userInfo);
+    if (!userInfo?.id) {
+      navigateToLogin();
+    } else {
+      storeToken();
+      setTokenAuthHeader();
+      if (!userInfo?.orgId) {
+        gotoCreateOrgPage();
+      } else {
+        afterRetriveUserInfo();
+      }
+    }
+  };
+
+  const gotoCreateOrgPage = () => {
+    navigate(RouteKeys.createOrg);
+  };
+
+  const storeToken = () => {
+    console.log('storeToken userToken==>', userToken);
+    localStorage.setItem('st', JSON.stringify(userToken));
+  };
+
+  const setTokenAuthHeader = () => {
+    console.log('setTokenAuthHeader userToken==>', userToken);
+    setAuthHeader(userToken ? userToken?.access.token : '');
+  };
+
+  const afterRetriveUserInfo = () => {
+    fetchProjects();
+    restorePreviousLocation();
+    fetchTaskStaticProperties();
   };
 
   const fetchProjects = () => {
@@ -98,6 +115,7 @@ const App = () => {
 
   const restorePreviousLocation = () => {
     const previousLocation = JSON.parse(localStorage.getItem('location') || '{}');
+    console.log('previousLocation==>', previousLocation);
     if (isPathValid(previousLocation?.pathname)) {
       navigate(previousLocation.pathname);
       localStorage.removeItem('location');
@@ -107,6 +125,37 @@ const App = () => {
       navigateToLogin();
     }
   };
+
+  const onProjectsFetched = () => {
+    console.log('projects==>', projects);
+    if (projects?.length === 0) return;
+    const currentRouteProjectId = getRouteProjectId();
+    if (currentRouteProjectId) {
+      selectProjectByCurrentProjectId(currentRouteProjectId);
+    } else {
+      setDefaultProject();
+    }
+  }
+
+  const getRouteProjectId = () => {
+    const projectId = location.pathname.split('/').filter((path: string) => {
+      return path.match(mongoIdRegex);
+    });
+    return projectId.length ? projectId[0] : '';
+  };
+
+  const selectProjectByCurrentProjectId = (routeProjectId: string) => {
+    const selectedProject = projects.find(project => project.id === routeProjectId);
+    dispatch(selectProject(selectedProject));
+  };
+
+  /**
+   * If no project selected then selects the first one and navigate to board
+   */
+  const setDefaultProject = () => {
+    dispatch(selectProject(projects[0]));
+    navigateToBoard(projects[0].id);
+  }
 
   const isPathValid = (path: string) => {
     return path && (path !== '/' || path !== RouteKeys.login);
@@ -128,7 +177,7 @@ const App = () => {
 
   const isPublicRoute = () => {
     const path = location.pathname;
-    return publicRoutes.indexOf(path) >= 0;
+    return publicRoutes.indexOf(path) >= 0 || path === '/';
   };
 
   return (
@@ -166,7 +215,7 @@ const useStyles = makeStyles((theme: any) => ({
     overflow: 'hidden'
   },
   routeContainer: {
-    paddingTop: '1rem'
+    // paddingTop: '1rem'
   }
 }));
 

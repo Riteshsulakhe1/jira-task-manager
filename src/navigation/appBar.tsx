@@ -1,3 +1,4 @@
+import React from 'react';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { Grid, Typography } from '@mui/material';
@@ -18,7 +19,7 @@ export default function AppBar() {
                         <ProjectDropdown />
                     </Grid>
                 </Grid>
-                <Grid item={true} xs={2}>
+                <Grid item={true} className='d-flex flex-end' xs={3}>
                     <UserActionMenu />
                 </Grid>
             </Toolbar>

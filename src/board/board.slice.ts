@@ -3,7 +3,7 @@ import { InitialBoardStates } from "../Types/board";
 import { getBoardEffect } from "./board.effect";
 
 const initialBoardState: InitialBoardStates = {
-    isLoading: false,
+    isLoading: true,
     data: null,
     err: null
 };

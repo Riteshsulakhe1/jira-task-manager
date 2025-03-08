@@ -1,3 +1,4 @@
+import React from "react";
 import { useDraggable, useDroppable, UseDraggableArguments, UseDroppableArguments, DropAnimation, defaultDropAnimationSideEffects } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
 import { TaskType } from '../Types/taskStaticProperties';
@@ -18,9 +19,7 @@ export const Droppable = (props: DroppableProps) => {
             accepts: props?.data?.accepts,
         },
     });
-    // if (over) {
-    //     console.log('over in droppable==>', over)
-    // }
+
     const style = {
         color: isOver ? 'green' : undefined,
         ...defaultColStyle

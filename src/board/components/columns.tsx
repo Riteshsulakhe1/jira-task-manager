@@ -19,6 +19,7 @@ const Columns = React.memo((props: ColumnsProps) => {
                     {
                         columns.map((column: ColumnItem) => (
                             <Column
+                                key={column._id}
                                 column={column}
                                 sprintId={sprintId}
                                 taskType={taskType}
