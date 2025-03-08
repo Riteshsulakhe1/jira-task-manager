@@ -1,20 +1,18 @@
-import { useCallback } from 'react';
-import InputLabel from '@mui/material/InputLabel';
+import React, { useCallback, memo } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useAppSelector } from '../../hooks';
-import { TaskSelectItem } from '../../Types/taskStaticProperties';
+import { TaskSelectItem, TaskType } from '../../Types/taskStaticProperties';
 
 interface TaskTypeProps {
-    type: string;
+    type: TaskType;
     handleTypeChange: (event: SelectChangeEvent) => void;
-    showLabel?: boolean
 }
 
-const TaskType = (props: TaskTypeProps) => {
+const TaskTypeDropdown = memo((props: TaskTypeProps) => {
 
-    const { type, handleTypeChange, showLabel } = props;
+    const { type, handleTypeChange } = props;
     const taskTypes: TaskSelectItem[] = useAppSelector(state => state.taskStaticProperties.data?.taskType) || [];
 
     const renderTypes = useCallback(() => {
@@ -27,8 +25,7 @@ const TaskType = (props: TaskTypeProps) => {
 
     if (taskTypes?.length) {
         return (
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                {showLabel ? <InputLabel id="task-type">Type</InputLabel> : null}
+            <FormControl fullWidth={true} sx={{ m: 0, maxWidth: '50%', minWidth: 120 }} size="small">
                 <Select
                     labelId="task-type"
                     id="task-type-selectr"
@@ -42,6 +39,6 @@ const TaskType = (props: TaskTypeProps) => {
     } else {
         return null;
     }
-}
+});
 
-export default TaskType;
+export default TaskTypeDropdown;

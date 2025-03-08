@@ -1,9 +1,9 @@
+import React from 'react';
 import { DragOverlay } from "@dnd-kit/core";
 import { createPortal } from 'react-dom';
 import { Task } from "../../Types/common";
 import { dropAnimation } from "../../common/dragDropHelper";
 import ColumnTaskCard from "./columnTaskCard";
-import React from "react";
 
 interface DragOverlayTaskCardProps {
     activeDraggingTask: Task | null;

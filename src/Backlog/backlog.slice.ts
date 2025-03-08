@@ -3,7 +3,7 @@ import { getBacklog } from "./backlog.effect";
 import { InitialStates } from '../Types/backlog';
 
 const initialState: InitialStates = {
-    isLoading: false,
+    isLoading: true,
     data: [],
     error: null
 };

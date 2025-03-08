@@ -26,4 +26,13 @@ export const getTaskStatusList = (projectId: string) => {
     }).catch((err) => {
         throw new Error(err.response.data.message);
     });
-}
+};
+
+export const getSprintListByProjectId = (projectId: string) => {
+    const url = `/project/${projectId}/getSprintList`;
+    return axiosInstance.get(url).then((res: any) => {
+        return res.data;
+    }).catch((err) => {
+        throw new Error(err.response.data.message);
+    });
+};

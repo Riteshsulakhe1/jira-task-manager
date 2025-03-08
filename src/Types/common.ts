@@ -40,3 +40,8 @@ export interface DrawerMenuItem {
     link: string;
     icon?: React.ReactElement;
 }
+
+export interface SelectOption {
+    label: string;
+    value: string;
+}

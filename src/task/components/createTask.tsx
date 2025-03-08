@@ -3,7 +3,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import { SelectChangeEvent } from '@mui/material/Select';
-import TaskType from './taskType';
+import TaskTypeDropdown from './taskType';
 import { TaskType as Type } from '../../Types/taskStaticProperties';
 import Loading from '../../common/loading';
 import { createTask } from '../../Apis/task';
@@ -11,17 +11,27 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { CreateTaskReqBody } from '../../Types/task';
 import { addTaskInSprint } from '../../Backlog/backlog.slice';
 import { Severity } from '../../Types/common';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Button from '@mui/material/Button';
+import CreateTaskModal from './createTaskModal';
 
 interface CreateTaskProps {
     toggleCreateTask: () => void;
     sprintId: string;
     toggleSnackbar: (msg: string, severity?: Severity) => void;
 }
-const CreateTask = ({ sprintId, toggleCreateTask, toggleSnackbar }: CreateTaskProps) => {
+const CreateTask = (props: CreateTaskProps) => {
+    const {
+        sprintId,
+        toggleCreateTask,
+        toggleSnackbar,
+    } = props;
 
     const [title, setTitle] = useState('');
     const [type, setType] = useState<Type>(Type.TASK);
     const [loading, setLoading] = useState<boolean>(false);
+    const [showCreateTaskDialog, setShowCreateTaskDialog] = useState(false);
 
     // Redux state selectors
     const projectId = useAppSelector(state => state.project.selectedProject?.id);
@@ -29,6 +39,7 @@ const CreateTask = ({ sprintId, toggleCreateTask, toggleSnackbar }: CreateTaskPr
     const dispatch = useAppDispatch();
 
     const handleTypeChange = (event: SelectChangeEvent) => {
+        event.stopPropagation();
         setType(event.target.value as Type);
     };
 
@@ -43,6 +54,7 @@ const CreateTask = ({ sprintId, toggleCreateTask, toggleSnackbar }: CreateTaskPr
     };
 
     const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
+        console.log('blur==>', event);
         toggleCreateTask();
     };
 
@@ -63,20 +75,48 @@ const CreateTask = ({ sprintId, toggleCreateTask, toggleSnackbar }: CreateTaskPr
         }
     };
 
+
+    const toggleShowCreateTaskDialog = () => {
+        setShowCreateTaskDialog(!showCreateTaskDialog);
+    };
     return (
         <Grid item={true} xs={12}>
+            {
+                showCreateTaskDialog ? (
+                    <CreateTaskModal
+                        title={title}
+                        type={type}
+                        sprintId={sprintId}
+                        toggleCreateTaskDialog={toggleShowCreateTaskDialog}
+                        toggleSnackbar={toggleSnackbar}
+                    />
+                ) : null
+            }
             <TextField
                 id="create-task-input"
-                sx={{ m: 1, width: '100%', height: '2.5rem', margin: 0 }}
+                sx={{ m: 1, width: '100%', margin: 0 }}
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">
-                            <TaskType type={type} handleTypeChange={handleTypeChange} />
+                            <TaskTypeDropdown type={type} handleTypeChange={handleTypeChange} />
                         </InputAdornment>
                     ),
                     endAdornment: (
                         <InputAdornment position="end">
-                            {loading ? <Loading /> : null}
+                            {
+                                loading ?
+                                    <Loading />
+                                    :
+                                    <>
+                                        <Button color={'secondary'} onClick={toggleShowCreateTaskDialog}>
+                                            Open in dialog
+                                        </Button>
+                                        <IconButton onClick={toggleCreateTask} aria-label="delete">
+                                            <CloseIcon />
+                                        </IconButton>
+                                    </>
+
+                            }
                         </InputAdornment>
                     )
                 }}
@@ -84,7 +124,6 @@ const CreateTask = ({ sprintId, toggleCreateTask, toggleSnackbar }: CreateTaskPr
                 placeholder={"what's need to be done ?"}
                 onChange={handleTitleChange}
                 onKeyDown={handleKeyDown}
-                onBlur={handleBlur}
                 autoFocus={true}
             />
         </Grid>

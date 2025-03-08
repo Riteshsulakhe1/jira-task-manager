@@ -1,3 +1,4 @@
+import React from 'react';
 import Grid from "@mui/material/Grid"
 import { BoardSprint } from "../../Types/board"
 import { makeStyles } from '@mui/styles';
@@ -19,6 +20,7 @@ export const BordHeader = ({ activeSprint }: BoardHeaderProps) => {
 
 const styles = makeStyles(() => ({
     heading: {
-        marginBottom: '2rem'
+        height: '2rem',
+        marginBottom: '0.25rem'
     }
 }));
