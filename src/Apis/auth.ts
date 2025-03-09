@@ -1,5 +1,5 @@
 import axiosInstance from "./axios";
-import { LoginReqBody, GetLoggedInUserBody, LogoutRequest, UserDetailsBody } from '../Types/auth';
+import { LoginReqBody, GetLoggedInUserBody, LogoutRequest, UserDetailsBody, RefreshAuthTokenBody, REFRESH_TOKENS_URL } from '../Types/auth';
 import { GenericAbortSignal } from "axios";
 
 export const login = async (data: LoginReqBody) => {
@@ -43,4 +43,12 @@ export const logout = async (body: LogoutRequest) => {
         console.log('err', err);
         return err.response.data;
     });
+};
+
+export const refreshAuthentication = async (body: RefreshAuthTokenBody) => {
+    return axiosInstance.post(REFRESH_TOKENS_URL, body).then(result => {
+        return result.data;
+    }).catch(err => {
+        return err.response.data;
+    })
 };

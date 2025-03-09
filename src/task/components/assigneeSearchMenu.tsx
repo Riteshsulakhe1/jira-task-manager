@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import useDebounceHook from '../../common/useDebounce.hook';
+import useDebounceHook from '../../common/customHooks/useDebounce.hook';
 
 export default function AssigneeSearchMenu() {
 

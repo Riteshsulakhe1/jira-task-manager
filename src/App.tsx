@@ -8,14 +8,13 @@ import { makeStyles } from '@mui/styles';
 import AppBar from './navigation/appBar';
 import { setAuthHeader, resetAuthHeader } from './Apis/axios';
 import { whoIsLoggedIn } from './authentication/auth.effect';
-import PublicRoutes from './publicRoutes';
+import PublicRoutes from './routes';
 import { getProjectsEffect } from './projects/projects.effect';
 import { RouteKeys, getBoardRoute, publicRoutes } from './navigation/routekeys';
 import { getTaskStaticPropertiesEffect } from './task/task.effect';
 import { useLocation } from 'react-router-dom';
 import { selectProject } from './projects/projects.slice';
 import { UserInfo } from './Types/auth';
-import { Project } from './Types/projects';
 import Loading from './common/loading';
 
 const App = () => {
