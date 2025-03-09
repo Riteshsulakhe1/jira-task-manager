@@ -1,9 +1,7 @@
 import axios from 'axios';
 import { REFRESH_TOKENS_URL } from '../Types/auth';
 import { RouteKeys } from '../navigation/routekeys';
-import { refreshAuthTokens } from './auth';
-import { useDispatch } from 'react-redux';
-import { setAuthTokens } from '../authentication/auth.slice';
+import { refreshAuthentication } from './auth';
 
 const DEV_URL = 'http://localhost:3001/v1';
 // const PROD_URL = 'https://task-manager-nodejs-xhzl.onrender.com/v1';
@@ -35,7 +33,7 @@ export const resetAuthHeader = () => {
             const tokenString = localStorage.getItem('st') || '';
             const tokens = tokenString ? JSON.parse(tokenString) : {};
             if (tokens?.refresh) {
-                const data = await refreshAuthTokens({ refreshToken: tokens.refresh.token });
+                const data = await refreshAuthentication({ refreshToken: tokens.refresh.token });
                 localStorage.setItem('st', JSON.stringify(data));
                 setAuthHeader(data.access.token);
                 originalRequest.headers['Authorization'] = `Bearer ${data.access.token}`

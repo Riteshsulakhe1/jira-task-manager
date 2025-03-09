@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import Routes from './publicRoutes';
+import Routes from './routes';
 import { Provider } from 'react-redux'
 import store from './store';
 import { ThemeProvider, createTheme, makeStyles } from '@mui/material/styles';

@@ -45,7 +45,7 @@ export const logout = async (body: LogoutRequest) => {
     });
 };
 
-export const refreshAuthTokens = async (body: RefreshAuthTokenBody) => {
+export const refreshAuthentication = async (body: RefreshAuthTokenBody) => {
     return axiosInstance.post(REFRESH_TOKENS_URL, body).then(result => {
         return result.data;
     }).catch(err => {
