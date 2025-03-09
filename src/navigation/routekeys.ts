@@ -12,7 +12,7 @@ export const RouteKeys = {
     createOrg: '/createOrganization',
     createProject: `${projectKey}/create`
 };
-
+export const PROJECT_ID_KEY = 'projectId';
 export const publicRoutes = [RouteKeys.login, RouteKeys.register, RouteKeys.forgotPassword];
 
 export const getProjectDetailsRoute = (projectId: string) => {

@@ -12,14 +12,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import { Box, Toolbar } from '@mui/material';
+import { Box, MenuItem, Toolbar } from '@mui/material';
 import ViewWeekOutlinedIcon from '@mui/icons-material/ViewWeekOutlined';
 import SegmentOutlinedIcon from '@mui/icons-material/SegmentOutlined';
 import { useAppSelector } from '../hooks';
 import { drawerLinks as links } from './drawer.constants';
 import { DrawerMenuItem, DrawerMenuKeys } from '../Types/common';
-import { getBacklogRoute, getBoardRoute } from './routekeys';
-import { useNavigate } from 'react-router-dom';
+import { getBacklogRoute, getBoardRoute, PROJECT_ID_KEY } from './routekeys';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -34,7 +34,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function PersistentDrawerLeft() {
 
-    const projectId = useAppSelector(state => state.project.selectedProject?.id);
+    const projectId = useAppSelector(state => state.project.selectedProject?.id || '');
+    const location = useLocation();
 
     const [open, setOpen] = React.useState(false);
     const [drawerLinks, setDrawerLinks] = React.useState<DrawerMenuItem[]>([]);
@@ -43,12 +44,14 @@ export default function PersistentDrawerLeft() {
     const navigate = useNavigate();
 
     React.useEffect(() => {
-        const menuItems: DrawerMenuItem[] = links.map((item: DrawerMenuItem) => ({
-            ...item,
-            icon: item.name === DrawerMenuKeys.BACKLOG ? <SegmentOutlinedIcon /> : <ViewWeekOutlinedIcon />
-        }));
-        setDrawerLinks(menuItems);
+        setDrawerMenu();
     }, []);
+
+    React.useEffect(() => {
+        if (projectId && drawerLinks.length) {
+            retriveSelectedDrawerMenu();
+        }
+    }, [projectId, drawerLinks]);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -58,13 +61,26 @@ export default function PersistentDrawerLeft() {
         setOpen(false);
     };
 
-    const onClickMenuItem = (item: DrawerMenuItem) => {
-        let url: string = '';
-        if (item.name === DrawerMenuKeys.BACKLOG) {
-            url = getBacklogRoute(projectId as string);
-        } else if (item.name === DrawerMenuKeys.BOARD) {
-            url = getBoardRoute(projectId as string);
+    const setDrawerMenu = () => {
+        const menuItems: DrawerMenuItem[] = links.map((item: DrawerMenuItem) => ({
+            ...item,
+            icon: item.name === DrawerMenuKeys.BACKLOG ? <SegmentOutlinedIcon /> : <ViewWeekOutlinedIcon />
+        }));
+        setDrawerLinks(menuItems);
+    };
+
+    const retriveSelectedDrawerMenu = () => {
+        const url = location.pathname.replace(projectId, PROJECT_ID_KEY);
+        const selectedMenu = drawerLinks.find(menu => menu.link === url);
+        if (selectedMenu?.name) {
+            setActiveMenuName(selectedMenu.name);
+        } else {
+            setActiveMenuName(drawerLinks[0].name);
         }
+    }
+
+    const onClickMenuItem = (item: DrawerMenuItem) => {
+        const url = item.link.replace(PROJECT_ID_KEY, projectId);
         setActiveMenuName(item.name);
         navigate(url);
     };
@@ -79,7 +95,6 @@ export default function PersistentDrawerLeft() {
             }}
         >
             <Toolbar />
-            {/* <Box sx={{ overflow: 'auto' }}> */}
             <List component="nav">
                 {drawerLinks.map((item: DrawerMenuItem, index) => (
                     <ListItemButton

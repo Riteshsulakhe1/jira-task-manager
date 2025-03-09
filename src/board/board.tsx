@@ -167,8 +167,10 @@ export default Board;
 const styles = makeStyles(theme => ({
     parentCol: {
         height: '79vh',
-        overflow: 'auto',
+        overflowX: 'auto',
         margin: '0px !important',
-        padding: '0px !important'
+        padding: '0px !important',
+        flexFlow: 'nowrap !important',
+        width: '100% !important'
     },
 }));
