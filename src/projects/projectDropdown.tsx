@@ -1,7 +1,7 @@
 import * as React from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select, { SelectChangeEvent, BaseSelectProps } from '@mui/material/Select';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { Project } from '../Types/projects';
 import { selectProject } from './projects.slice';
@@ -9,11 +9,32 @@ import { useNavigate } from 'react-router-dom';
 import { getBacklogRoute } from '../navigation/routekeys';
 import { makeStyles } from '@mui/styles';
 import { getProjectSprintListEffect, getProjectTaskStatusEffect } from './projects.effect';
+import styled from '@emotion/styled';
 
 interface ProjectDropdownProps {
     fromCreateTaskModal?: boolean;
     onChangeProject?: (projectId: string) => void;
 }
+
+// Define custom props
+interface CustomSelectProps extends BaseSelectProps {
+    customcolor?: string;
+}
+const CustomSelect = styled(Select)<CustomSelectProps>(({ theme, customcolor }) => ({
+    color: customcolor || "white", // Dynamic text color
+    "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: customcolor || "white", // Dynamic border color
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+        borderColor: customcolor || "white",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        borderColor: customcolor || "white",
+    },
+    "& svg": {
+        color: customcolor || "white", // Dynamic dropdown icon color
+    },
+}));
 
 export default function ProjectDropdown(props: ProjectDropdownProps) {
     const { fromCreateTaskModal = false, onChangeProject } = props;
@@ -111,19 +132,21 @@ export default function ProjectDropdown(props: ProjectDropdownProps) {
 
     return (
         <FormControl
-            fullWidth={true}
-            sx={{ m: fromCreateTaskModal ? 0 : 1, minWidth: 120, maxWidth: '50%' }}
+            fullWidth={fromCreateTaskModal ? false : true}
+            sx={{ m: fromCreateTaskModal ? 0 : 1, minWidth: 200 }}
             size="small"
             classes={{ root: classes.form }}
         >
-            <Select
+            <CustomSelect
                 id="project-dropdown"
+                customcolor={fromCreateTaskModal ? 'black' : 'white'}
                 value={selectedProjectId}
-                onChange={onChange}
+                onChange={(e) => onChange(e as SelectChangeEvent)}
+                classes={{ root: classes.select }}
             >
                 {renderNoneOption()}
                 {renderMenuItem()}
-            </Select>
+            </CustomSelect>
         </FormControl>
     );
 }
@@ -135,5 +158,9 @@ const styles = makeStyles(theme => ({
     },
     label: {
         color: 'white'
+    },
+    select: {
+        color: 'white',
+        borderColor: 'white'
     }
 }));

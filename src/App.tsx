@@ -16,6 +16,7 @@ import { useLocation } from 'react-router-dom';
 import { selectProject } from './projects/projects.slice';
 import { UserInfo } from './Types/auth';
 import { Project } from './Types/projects';
+import Loading from './common/loading';
 
 const App = () => {
 
@@ -167,6 +168,7 @@ const App = () => {
 
   const navigateToLogin = () => {
     if (!isRefreshingAuth && !userInfo?.id && !isPublicRoute()) {
+      console.log('navigating to login $$$$$$$$$$$$')
       navigate(RouteKeys.login);
     }
   };
@@ -182,18 +184,26 @@ const App = () => {
 
   return (
     <Grid container={true} xs={12} classes={{ root: classes.root }}>
-      <Grid item={true} xs={12} classes={{ root: classes.nav }}>
-        {userInfo?.id && <AppBar />}
-      </Grid>
-      <Grid container={true} classes={{ root: classes.main }}>
-        <Grid item={true} xs={2}>
-          {userInfo?.id && <PersistentDrawerLeft />}
-        </Grid>
-        <Grid item={true} xs={userInfo?.id ? 10
-          : 12} classes={{ root: classes.routeContainer }}>
-          <PublicRoutes />
-        </Grid>
-      </Grid>
+      {
+        isRefreshingAuth ? <Loading /> :
+          (
+            <>
+              <Grid item={true} xs={12} classes={{ root: classes.nav }}>
+                {userInfo?.id && <AppBar />}
+              </Grid>
+              <Grid container={true} classes={{ root: classes.main }}>
+                <Grid item={true} xs={2}>
+                  {userInfo?.id && <PersistentDrawerLeft />}
+                </Grid>
+                <Grid item={true} xs={userInfo?.id ? 10
+                  : 12} classes={{ root: classes.routeContainer }}>
+                  <PublicRoutes />
+                </Grid>
+              </Grid>
+            </>
+          )
+      }
+
     </Grid>
   );
 }

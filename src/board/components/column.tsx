@@ -18,12 +18,13 @@ const Column = (props: ColumnProps) => {
     const classes = useStyles();
 
     return (
-        <Grid
-            item={true}
-            xs={3}
-            key={column._id}
-            classes={{ root: classes.statusCol }}
-        >
+        // <Grid
+        //     item={true}
+        //     xs={3}
+        //     key={column._id}
+        //     classes={{ root: classes.statusCol }}
+        // >
+        <div className={classes.statusCol}>
             <Draggable id={column._id} data={{ type: 'column' }}>
                 <Droppable id={column._id} data={{ accepts: taskType }}>
                     <Paper classes={{ root: classes.colTitle }}>
@@ -40,7 +41,8 @@ const Column = (props: ColumnProps) => {
                     </SortableContext>
                 </Droppable>
             </Draggable>
-        </Grid>
+            {/* </Grid> */}
+        </div>
     )
 }
 const useStyles = makeStyles(theme => ({
@@ -49,7 +51,10 @@ const useStyles = makeStyles(theme => ({
         padding: '0.25rem',
         background: '#f7f8f9',
         paddingTop: '0px !important',
-        paddingBottom: '2rem'
+        paddingBottom: '2rem',
+        minWidth: '15rem',
+        width: 'calc(95%/4)',
+        flexShrink: 0
     },
     colTitle: {
         height: '5vh',

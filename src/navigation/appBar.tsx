@@ -15,7 +15,7 @@ export default function AppBar() {
                     <Typography variant="h6" noWrap component="div">
                         Task Manager
                     </Typography>
-                    <Grid item={true} xs={2}>
+                    <Grid item={true} xs={3}>
                         <ProjectDropdown />
                     </Grid>
                 </Grid>
