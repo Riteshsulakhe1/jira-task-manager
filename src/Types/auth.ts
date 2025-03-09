@@ -58,3 +58,9 @@ export interface UserDetails extends UserDetailsBody {
 export interface LogoutRequest {
     refreshToken: string;
 }
+
+export interface RefreshAuthTokenBody {
+    refreshToken: string;
+}
+
+export const REFRESH_TOKENS_URL = '/auth/refresh-tokens';

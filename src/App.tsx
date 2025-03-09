@@ -15,7 +15,6 @@ import { getTaskStaticPropertiesEffect } from './task/task.effect';
 import { useLocation } from 'react-router-dom';
 import { selectProject } from './projects/projects.slice';
 import { UserInfo } from './Types/auth';
-import { Project } from './Types/projects';
 import Loading from './common/loading';
 
 const App = () => {
