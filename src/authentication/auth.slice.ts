@@ -8,7 +8,7 @@ const initialState: InitialState = {
     userToken: null, // for storing the JWT
     error: null,
     success: false, // for monitoring the registration process.
-    refreshingAuth: true
+    refreshingAuth: false
 }
 
 const authSlice = createSlice({

@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import Loading from '../common/loading';
-import useDebounceHook from '../common/useDebounce.hook';
+import useDebounceHook from '../common/customHooks/useDebounce.hook';
 import SnackbarAlert from '../common/snackbar';
 import { createProject } from '../Apis/project';
 import { SnackbarInfo } from '../Types/common';
